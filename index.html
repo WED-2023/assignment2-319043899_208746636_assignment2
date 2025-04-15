@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Galactic Combat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Link to external JavaScript -->
+    <script src="spaceship.js" defer></script>
+</head>
+<body>
+    <header>
+       <h1></h1>
+       <img src="logo2.png" alt="Game Logo" class="logo">
+    </header>
+ 
+    <nav>
+       <button onclick="showSection('welcome')">Welcome</button>
+       <button onclick="showSection('login')">Login</button>
+       <button onclick="showSection('about')">About</button>
+    </nav>
+ <main>
+    <div id="welcome" class="content-section">
+       <h2>Welcome to the Galactic Combat Game!</h2>
+       <p>Get ready for an exciting space adventure.</p>
+       <h3>Ido Bergerzon 319043899, link to website: https://wed-2023.github.io/319043899/</h3>
+       <h3>Aviv Nachmias 208746636, link to website: https://wed-2023.github.io/208746636/</h3>
+
+       <h3></h3>
+       <button onclick="showSection('login')">Login</button>
+       <button onclick="showSection('signup')">Sign Up</button>
+    </div>
+ 
+    <div id="signup" class="content-section">
+       <h2>Sign Up</h2>
+       <p>Registration form will go here.</p>
+       <form id="signupForm">
+        <!-- Username -->
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+    
+        <!-- Password -->
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+    
+        <!-- Confirm Password -->
+        <div>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+    
+        <!-- First Name -->
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+    
+        <!-- Last Name -->
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+        </div>
+    
+        <!-- Email -->
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+    
+        <!-- Date of Birth -->
+        <div>
+            <label>Date of Birth:</label>
+            <select id="birthDay" name="birthDay" required>
+                <option value="">Day</option>
+            </select>
+            <select id="birthMonth" name="birthMonth" required>
+                <option value="">Month</option>
+            </select>
+            <select id="birthYear" name="birthYear" required>
+                <option value="">Year</option>
+            </select>
+        </div>
+    
+        <!-- Message -->
+        <p id="signupMessage"></p>
+    
+        <!-- Submit Button -->
+        <button type="submit">Sign Up</button>
+    </form>
+    
+    <p id="signupMessage"></p>
+    </div>
+ 
+
+
+    <div id="login" class="content-section">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div>
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" name="username" required>
+            </div>
+            <div>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p id="loginMessage"></p> <!-- הודעת שגיאה או הצלחה -->
+    </div>
+ 
+    <div id="about" class="content-section">
+       <h2>About</h2>
+       <p>This game was created as part of a web development course.</p>
+    </div>
+ 
+    <div id="game" class="content-section">
+        <h1>dsadasdas</h1>
+       <canvas id="gameCanvas" width="800" height="600"></canvas>
+    </div>
+</main>
+ 
+    <footer>
+       <p>© 2025 AI Group. All rights reserved. Contact: idoberg@post.bgu.ac.il.com</p>
+    </footer>
+ </body>
+ 
