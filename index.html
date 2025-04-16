@@ -13,7 +13,6 @@
 </head>
 <body>
     <header>
-        <h1>dasdas</h1>
        <h1></h1>
        <img src="logo2.png" alt="Game Logo" class="logo">
     </header>
@@ -31,8 +30,9 @@
        <h3>Aviv Nachmias 208746636, link to website: https://wed-2023.github.io/208746636/</h3>
 
        <h3></h3>
-       <button onclick="showSection('login')">Login</button>
-       <button onclick="showSection('signup')">Sign Up</button>
+       <button class="styled-button" onclick="showSection('login')">Login</button>
+       <button class="styled-button" onclick="showSection('signup')">Sign Up</button>
+       
     </div>
  
     <div id="signup" class="content-section">
@@ -121,12 +121,50 @@
        <h2>About</h2>
        <p>This game was created as part of a web development course.</p>
     </div>
+
+    <div id="config" class="content-section">
+        <form id="configForm">
+            <h2>Game Configuration</h2>
+            <label for="shootKey">Select shooting key (A-Z or Space):</label>
+            <input type="text" id="shootKey" maxlength="1" placeholder="Press a key">
+            <label for="gameDuration">Select game duration (minutes, min 2):</label>
+            <input type="number" id="gameDuration" min="2" value="2">
+            <button id="startbutton">Start Game</button>
+
+        </form>
+        
+        <p id="configMessage"></p> <!-- הודעת שגיאה או הצלחה -->
+    </div>
  
     <div id="game" class="content-section">
         <h1>dsadasdas</h1>
        <canvas id="gameCanvas" width="800" height="600"></canvas>
     </div>
 </main>
+
+<!-- Template for the About Modal -->
+<template id="aboutTemplate">
+    <dialog id="aboutModal">
+        <button id="closeDialog">X</button>
+      <form method="dialog">
+        <h2>About the Project</h2>
+        <p><strong>Submitted by:</strong></p>
+        <ul>
+          <li>Ido Bergerzon – 319043899</li>
+          <li>Aviv Nachmias – 208746636</li>
+        </ul>
+        <p><strong>Template used:</strong> Yes, using &lt;template&gt;</p>
+        <p><strong>jQuery Plugin used:</strong> No, native HTML5 &lt;dialog&gt;</p>
+        <p><strong>Challenges:</strong></p>
+        <ul>
+          <li>Validations and transitions between screens</li>
+          <li>Configuring and starting the game dynamically</li>
+        </ul>
+
+      </form>
+    </dialog>
+  </template>
+  
  
     <footer>
        <p>© 2025 AI Group. All rights reserved. Contact: idoberg@post.bgu.ac.il.com</p>

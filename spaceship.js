@@ -69,10 +69,40 @@ function handle_login(event) {
     if (isValidUser(username, pass)) {
         alert("Login successful!");
         clearFormFields("loginForm")
-        showSection('game');
+        showSection('config');
     } else {
         displayMessage("Invalid username or password.", 'error', 'loginMessage');
     }
+}
+
+function handle_config(event){
+    //const errors = [];
+
+    event.preventDefault();
+
+    const play_button=document.getElementById("shootKey")
+    const time_to_play=document.getElementById("gameDuration")
+    const play_button_value=play_button.value;
+    const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
+    if (!validShootKey || !play_button_value) {
+        //errors.push("Please enter a valid shooting key (A-Z or Space).");
+        //displayMessage("Key is not valid!.", 'error', 'configMessage');
+        alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
+
+        return;
+    }
+    const duration=parseInt(time_to_play.value);
+    if(duration<2){
+        //errors.push("Please enter a valid duration time");
+        //displayMessage("Duration time is not valid!.", 'error', 'configMessage');
+        alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
+
+        return;
+    }
+    document.getElementById('configMessage').textContent = "";
+    clearFormFields("configForm")
+    showSection('game')
+
 }
 
 function isValidUser(username, password) {
@@ -141,4 +171,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loginForm = document.getElementById("loginForm");
     loginForm.addEventListener('submit', handle_login);
+
+    const startButton = document.getElementById("startbutton");
+    startButton.addEventListener('click', handle_config);
+
+    // ========== Modal - About ==========
+    const template = document.getElementById("aboutTemplate");
+    const clone = template.content.cloneNode(true);
+    document.body.appendChild(clone);
+
+    const dialog = document.getElementById("aboutModal");
+    const closeBtn = document.getElementById("closeDialog");
+
+    const aboutButton = document.querySelector('button[onclick="showSection(\'about\')"]');
+    if (aboutButton) {
+        aboutButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            dialog.showModal();
+        });
+    }
+
+    closeBtn.addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (e) => {
+        const rect = dialog.getBoundingClientRect();
+        if (
+            e.clientX < rect.left ||
+            e.clientX > rect.right ||
+            e.clientY < rect.top ||
+            e.clientY > rect.bottom
+        ) {
+            dialog.close();
+        }
+    });
+
+    // ========== Handle ESC key to close modal ==========
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Escape" && dialog.open) {
+            dialog.close();
+        }
+    });
 });
+
+
