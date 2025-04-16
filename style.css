@@ -61,6 +61,21 @@ nav button:hover {
     background-color: #5c5c5c;
     transform: scale(1.05);
 }
+.styled-button {
+    padding: 10px 20px;
+    background-color: #673ab7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.styled-button:hover {
+    background-color: #512da8;
+}
 
 /* MAIN SECTION */
 main {
@@ -76,6 +91,96 @@ footer {
     padding: 12px;
     font-size: 14px;
     border-top: 1px solid #444;
+}
+/* הוספת סגנון לתיבת ה-login */
+#login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* רקע כהה שקוף */
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px; /* רוחב קבוע לחלון */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* הוספת צללים */
+    position: absolute;
+    top: 50%; /* מיקום בחלק העליון של המסך */
+    left: 50%; /* מיקום בצד השמאלי של המסך */
+    transform: translate(-50%, -50%); /* ממקם את החלון בדיוק במרכז */
+}
+
+/* עיצוב כל שדה בטופס */
+#login form div {
+    margin-bottom: 15px;
+}
+
+/* עיצוב כפתור ההתחברות */
+#login button {
+    padding: 10px 20px;
+    background-color: #512da8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+/* שינוי צבע כפתור כאשר עכבר מעליו */
+#login button:hover {
+    background-color: #45a049;
+}
+
+/* עיצוב הודעת שגיאה או הצלחה */
+#loginMessage {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+/* Update Signup Form Position */
+#signup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Background with transparency */
+    padding: 20px;
+    border-radius: 8px;
+    width: 350px; /* Fixed width for the window */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Add shadows */
+    position: absolute;
+    top: 50%; /* Position it halfway from the top of the screen */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Center the element using translate */
+}
+
+/* General styling for form fields */
+#signup form div {
+    margin-bottom: 15px;
+}
+
+/* Style for the Signup button */
+#signup button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+/* Change button color when hovering */
+#signup button:hover {
+    background-color: #45a049;
+}
+
+/* Error or success message */
+#signupMessage {
+    color: red;
+    font-size: 14px;
+    text-align: center;
 }
 
 #gameTimer {

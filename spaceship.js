@@ -69,10 +69,40 @@ function handle_login(event) {
     if (isValidUser(username, pass)) {
         alert("Login successful!");
         clearFormFields("loginForm")
-        showSection('game');
+        showSection('config');
     } else {
         displayMessage("Invalid username or password.", 'error', 'loginMessage');
     }
+}
+
+function handle_config(event){
+    //const errors = [];
+
+    event.preventDefault();
+
+    const play_button=document.getElementById("shootKey")
+    const time_to_play=document.getElementById("gameDuration")
+    const play_button_value=play_button.value;
+    const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
+    if (!validShootKey || !play_button_value) {
+        //errors.push("Please enter a valid shooting key (A-Z or Space).");
+        //displayMessage("Key is not valid!.", 'error', 'configMessage');
+        alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
+
+        return;
+    }
+    const duration=parseInt(time_to_play.value);
+    if(duration<2){
+        //errors.push("Please enter a valid duration time");
+        //displayMessage("Duration time is not valid!.", 'error', 'configMessage');
+        alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
+
+        return;
+    }
+    document.getElementById('configMessage').textContent = "";
+    clearFormFields("configForm")
+    showSection('game')
+
 }
 
 function isValidUser(username, password) {
