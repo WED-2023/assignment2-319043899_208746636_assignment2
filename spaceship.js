@@ -3,6 +3,62 @@ const users = [
     { username: 'p', password: 'testuser' },
 ];
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    showSection('welcome');
+
+    populateDays();
+    populateMonths();
+    populateYears();
+
+    const signupForm = document.getElementById("signupForm");
+    signupForm.addEventListener('submit', handle_signup);
+
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener('submit', handle_login);
+
+    const startButton = document.getElementById("startbutton");
+    startButton.addEventListener('click', handle_config);
+
+    // ========== Modal - About ==========
+    const template = document.getElementById("aboutTemplate");
+    const clone = template.content.cloneNode(true);
+    document.body.appendChild(clone);
+
+    const dialog = document.getElementById("aboutModal");
+    const closeBtn = document.getElementById("closeDialog");
+
+    const aboutButton = document.querySelector('button[onclick="showSection(\'about\')"]');
+    if (aboutButton) {
+        aboutButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            dialog.showModal();
+        });
+    }
+
+    closeBtn.addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (e) => {
+        const rect = dialog.getBoundingClientRect();
+        if (
+            e.clientX < rect.left ||
+            e.clientX > rect.right ||
+            e.clientY < rect.top ||
+            e.clientY > rect.bottom
+        ) {
+            dialog.close();
+        }
+    });
+
+    // ========== Handle ESC key to close modal ==========
+    document.addEventListener('keydown', (event) => {
+        if (event.key === "Escape" && dialog.open) {
+            dialog.close();
+        }
+    });
+});
+
+
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.content-section');
     sections.forEach(section => {
@@ -159,7 +215,6 @@ function clearFormFields(formId) {
     }
 }
 
-
 const upperLimit = canvas.height * 0.6;
 let canvas = document.getElementById('gameCanvas');
 let ctx = canvas.getContext('2d');
@@ -238,20 +293,4 @@ function gameLoop() {
     updateGame();
     drawGame();
     gameLoopId = requestAnimationFrame(gameLoop);
-  }
-
-
-
-  document.addEventListener('DOMContentLoaded', () => {
-    showSection('welcome');
-
-    populateDays();
-    populateMonths();
-    populateYears();
-
-    const signupForm = document.getElementById("signupForm");
-    signupForm.addEventListener('submit', handle_signup);
-
-    const loginForm = document.getElementById("loginForm");
-    loginForm.addEventListener('submit', handle_login);
-});
+}
