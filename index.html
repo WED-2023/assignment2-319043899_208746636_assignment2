@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Galactic Combat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Link to external CSS -->
     <link rel="stylesheet" href="style.css">
     
@@ -14,7 +14,7 @@
 <body>
     <header>
        <h1></h1>
-       <img src="logo2.png" alt="Game Logo" class="logo">
+       <img src="assets/logo2.png" alt="Game Logo" class="logo">
     </header>
  
     <nav>
@@ -123,7 +123,14 @@
  
     <div id="game" class="content-section">
         <h1>dsadasdas</h1>
-       <canvas id="gameCanvas" width="800" height="600"></canvas>
+       <!-- Game Screen -->
+       <div id="game" class="applicationpage">
+        <div id="gameTimer">Time: 2:00</div>
+        <canvas id="gameCanvas" width="1000" height="600"></canvas>
+        <button id="backToWelcomeBtn">Back to Welcome</button>
+        <button id="newGameButton">New Game</button>
+        <button id="inGameModal" onclick="openAboutModal()">About</button>
+    </div>
     </div>
 </main>
  

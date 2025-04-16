@@ -129,7 +129,90 @@ function clearFormFields(formId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+
+const upperLimit = canvas.height * 0.6;
+let canvas = document.getElementById('gameCanvas');
+let ctx = canvas.getContext('2d');
+let player = {
+    x: 0, y: 0, width: 80, height: 80, speed: 5
+};
+let gameTime;
+let keys = {};
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => delete keys[e.key]);
+document.addEventListener("keyleft", e => delete keys[e.key]);
+
+function gameSetUp(){
+    player.x = Math.random() * (canvas.width - player.width);
+    player.y = canvas.height - player.height;
+
+    playerImg = new Image();
+    playerImg.src = 'assets/playerShip';
+    
+    badShip1Img = new Image();
+    badShip1Img.src = 'assets/enemyShip1.png'; 
+
+    badShip2Img = new Image();
+    badShip2Img.src = 'assets/enemyShip2.png'; 
+
+    badShip3Img = new Image();
+    badShip3Img.src = 'assets/enemyShip3.png';
+    
+    startGameTimer();
+
+};
+
+function startGameTimer() {
+    // Reset timer if it's already running
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    gameTime = 120;
+
+    timerInterval = setInterval(function() {
+        gameTime--;
+        
+        // Convert to minutes and seconds
+        const minutes = Math.floor(gameTime / 60);
+        const seconds = gameTime % 60;
+        
+        // Display time in format MM:SS
+        $('#gameTimer').text(`Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+        
+        // When time runs out
+        if (gameTime <= 0) {
+            clearInterval(timerInterval);
+            // Add your game over logic here
+            alert('Game Over!');
+        }
+    }, 1000);
+}
+
+
+function updateGame(){
+    if (keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["ArrowDown"]) player.y += player.speed;
+    if (keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["ArrowRight"]) player.x += player.speed;
+
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
+}
+
+function drwaGame(){
+
+}
+
+function gameLoop() {
+    if (!gameRunning) return;
+    updateGame();
+    drawGame();
+    gameLoopId = requestAnimationFrame(gameLoop);
+  }
+
+
+
+  document.addEventListener('DOMContentLoaded', () => {
     showSection('welcome');
 
     populateDays();

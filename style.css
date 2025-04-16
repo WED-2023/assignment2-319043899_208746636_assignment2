@@ -9,7 +9,7 @@ html, body {
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #fff;
-    background-image: url('background2.png');
+    background-image: url('assets/background2.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -76,4 +76,11 @@ footer {
     padding: 12px;
     font-size: 14px;
     border-top: 1px solid #444;
+}
+
+#gameTimer {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px;
+    color: white;
 }
