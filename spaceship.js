@@ -78,12 +78,14 @@ let player = {
 let gameTime;
 let keys = {};
 let enemyShips = [];
+let enemyBullets = [];
 let playerImg = new Image();
 let badShip1Img = new Image();
 let badShip2Img = new Image();
 let badShip3Img = new Image();
 let badShip4Img = new Image();
-
+const enemyBulletLimit = 0.75 * canvas.height;
+ 
 
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.content-section');
@@ -256,7 +258,7 @@ function gameSetUp(duration){
 
     player.x = Math.random() * (canvas.width - player.width);
     player.y = canvas.height - player.height;
-    // Set image sources
+
     playerImg.src = 'assets/playerShip.png';
     badShip1Img.src = 'assets/enemyShip1.png';
     badShip2Img.src = 'assets/enemyShip2.png';
@@ -385,7 +387,7 @@ function updateEnemyPositions() {
 
     enemyShips.forEach(enemy => {
         enemy.x += enemySpeed * enemyDirection;
-        if (enemy.x + 0.5*enemy.width >= canvas.width || enemy.x - 0.5*enemy.width <= 0) {
+        if (enemy.x >= canvas.width - 50 || enemy.x <= 0) {
             reachedBoundary = true;
         }
     });
@@ -398,6 +400,22 @@ function updateEnemyPositions() {
     }
 }
 
-// function createPlayerBullet(){
+function playerShoot(){
 
-// }
+}
+
+function enemyShoot() {
+    const randomEnemy = enemyShips[Math.floor(Math.random() * enemyShips.length)];
+    // Create a bullet object
+    const bullet = {
+        x: randomEnemy.x + randomEnemy.width / 2 - 2, 
+        y: randomEnemy.y + randomEnemy.height, 
+        width: 10, 
+        height: 15, 
+        speed: enemySpeed // Bullet speed matches enemySpeed need to be change 
+    };
+
+    enemyBullets.push(bullet);
+    
+}
+

@@ -183,11 +183,21 @@ footer {
     text-align: center;
 }
 
-#gameTimer {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px;
-    color: white;
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden; 
+    position: relative;
+}
+
+#gameCanvas {
+    display: block;
+    background-color: #000033; 
+    border: 2px solid #444; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
 }
 
 #gameTimer {
@@ -201,20 +211,4 @@ footer {
     padding: 10px;
     border-radius: 5px;
     z-index: 1000;
-}
-
-#timerDisplay {
-    font-family: monospace;
-}
-
-#game.content-section {
-    display: none;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #000;
-}
-
-#game.content-section.active {
-    display: block;
 }
