@@ -1,9 +1,10 @@
-// רשימת המשתמשים
+// User db
 const users = [
     { username: 'p', password: 'testuser' },
+    { username: '1', password: '1' } //delete before applying 
 ];
 
-
+// =========Main function ============
 document.addEventListener('DOMContentLoaded', () => {
     showSection('welcome');
 
@@ -48,21 +49,40 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
             dialog.close();
         }
-    
-    
-    
     });
 
-    // ========== Handle ESC key to close modal ==========
+    // ========== Handle keys  ==========
     document.addEventListener('keydown', (event) => {
+        keys[event.key] = true;
+        if (event.key === window.shootKey){
+            // Handle shooting action
+            createPlayerBullet();
+        }
         if (event.key === "Escape" && dialog.open) {
             dialog.close();
         }
+        
     });
-
-    document.addEventListener("keydown", e => keys[e.key] = true);
     document.addEventListener("keyup", e => delete keys[e.key]);
 });
+
+// ========= utilities ==========
+let canvas = document.getElementById('gameCanvas');
+let ctx = canvas.getContext('2d');
+let gameRunning = false;
+let gameLoopId = null;
+const upperLimit = canvas.height * 0.6;
+let player = {
+    x: 0, y: 0, width: 80, height: 80, speed: 5
+};
+let gameTime;
+let keys = {};
+let enemyShips = [];
+let playerImg = new Image();
+let badShip1Img = new Image();
+let badShip2Img = new Image();
+let badShip3Img = new Image();
+let badShip4Img = new Image();
 
 
 function showSection(sectionId) {
@@ -77,6 +97,22 @@ function showSection(sectionId) {
     }
 }
 
+function displayMessage(message, type, elementId = 'signupMessage') {
+    const messageElement = document.getElementById(elementId);
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.style.color = type === 'success' ? 'green' : 'red';
+    }
+}
+
+function clearFormFields(formId) {
+    const form = document.getElementById(formId);
+    if (form) {
+        form.reset(); // Clears all inputs in the form
+    }
+}
+
+ //========= Signup =========================
 function handle_signup(event) {
     event.preventDefault();
 
@@ -122,135 +158,6 @@ function handle_signup(event) {
     }, 1000);
 }
 
-function handle_login(event) {
-    event.preventDefault();
-
-    const username = document.getElementById("loginUsername").value.trim();
-    const pass = document.getElementById("loginPassword").value;
-
-    if (isValidUser(username, pass)) {
-        alert("Login successful!");
-        clearFormFields("loginForm")
-        showSection('config');
-    } else {
-        displayMessage("Invalid username or password.", 'error', 'loginMessage');
-    }
-}
-
-function handle_config(event){
-    //const errors = [];
-
-    event.preventDefault();
-
-    const play_button=document.getElementById("shootKey")
-    const time_to_play=document.getElementById("gameDuration")
-    const play_button_value=play_button.value;
-    const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
-    if (!validShootKey || !play_button_value) {
-        //errors.push("Please enter a valid shooting key (A-Z or Space).");
-        //displayMessage("Key is not valid!.", 'error', 'configMessage');
-        alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
-
-        return;
-    }
-    const duration=parseInt(time_to_play.value);
-    const duration_in_seconds=duration*60;
-    if(duration_in_seconds<120){
-        //errors.push("Please enter a valid duration time");
-        //displayMessage("Duration time is not valid!.", 'error', 'configMessage');
-        alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
-
-        return;
-    }
-    document.getElementById('configMessage').textContent = "";
-    clearFormFields("configForm")
-    showSection('game')
-    gameSetUp(duration_in_seconds);
-
-}
-
-
-
-let canvas = document.getElementById('gameCanvas');
-let ctx = canvas.getContext('2d');
-const upperLimit = canvas.height * 0.6;
-let player = {
-    x: 0, y: 0, width: 80, height: 80, speed: 5
-};
-let gameTime;
-let keys = {};
-
-
-function gameSetUp(duration){
-    player.x = Math.random() * (canvas.width - player.width);
-    player.y = canvas.height - player.height;
-
-    let playerImg = new Image();
-    playerImg.src = 'assets/playerShip.png';
-    
-    let badShip1Img = new Image();
-    badShip1Img.src = 'assets/enemyShip1.png'; 
-
-    let badShip2Img = new Image();
-    badShip2Img.src = 'assets/enemyShip2.png'; 
-
-    let badShip3Img = new Image();
-    badShip3Img.src = 'assets/enemyShip3.png';
-    
-    startGameTimer(duration);
-
-};
-
-let timerInterval;
-function startGameTimer(duration) {
-    // Reset timer if it's already running
-    if (timerInterval) {
-        clearInterval(timerInterval);
-    }
-    // gameTime = 120;
-
-    timerInterval = setInterval(function() {
-        duration--;
-        
-        // Convert to minutes and seconds
-        const minutes = Math.floor(duration / 60);
-        const seconds = duration % 60;
-        
-        // Display time in format MM:SS
-        $('#gameTimer').text(`Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-        
-        // When time runs out
-        if (duration <= 0) {
-            clearInterval(timerInterval);
-            // Add your game over logic here
-            alert('Game Over!');
-        }
-    }, 1000);
-}
-
-
-function updateGame(){
-    if (keys["ArrowUp"]) player.y -= player.speed;
-    if (keys["ArrowDown"]) player.y += player.speed;
-    if (keys["ArrowLeft"]) player.x -= player.speed;
-    if (keys["ArrowRight"]) player.x += player.speed;
-
-    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
-    player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
-}
-
-function drawGame(){
-
-}
-
-function gameLoop() {
-    if (!gameRunning) return;
-    updateGame();
-    drawGame();
-    gameLoopId = requestAnimationFrame(gameLoop);
-}
-
-
 function populateDays() {
     const daySelect = document.getElementById('birthDay');
     for (let i = 1; i <= 31; i++) {
@@ -285,22 +192,212 @@ function populateYears() {
         yearSelect.appendChild(option);
     }
 }
-function displayMessage(message, type, elementId = 'signupMessage') {
-    const messageElement = document.getElementById(elementId);
-    if (messageElement) {
-        messageElement.textContent = message;
-        messageElement.style.color = type === 'success' ? 'green' : 'red';
+
+// ======= login ========
+function handle_login(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("loginUsername").value.trim();
+    const pass = document.getElementById("loginPassword").value;
+
+    if (isValidUser(username, pass)) {
+        alert("Login successful!");
+        clearFormFields("loginForm")
+        showSection('config');
+    } else {
+        displayMessage("Invalid username or password.", 'error', 'loginMessage');
     }
 }
 
-
-
-function clearFormFields(formId) {
-    const form = document.getElementById(formId);
-    if (form) {
-        form.reset(); // Clears all inputs in the form
-    }
-}
 function isValidUser(username, password) {
     return users.some(user => user.username === username && user.password === password);
 }
+
+// ======= Game Configuration ==========
+function handle_config(event){
+    //const errors = [];
+
+    event.preventDefault();
+
+    const play_button=document.getElementById("shootKey")
+    const time_to_play=document.getElementById("gameDuration")
+    const play_button_value=play_button.value;
+    const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
+    if (!validShootKey || !play_button_value) {
+        //errors.push("Please enter a valid shooting key (A-Z or Space).");
+        //displayMessage("Key is not valid!.", 'error', 'configMessage');
+        alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
+
+        return;
+    }
+
+    const duration=parseInt(time_to_play.value);
+    const duration_in_seconds=duration*60;
+    if(duration_in_seconds<120){
+        alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
+        return;
+    }
+
+    window.shootKey = play_button_value
+    document.getElementById('configMessage').textContent = "";
+    clearFormFields("configForm")
+    console.log('Switching to game section');
+    showSection('game')
+    console.log('Starting game setup');
+    gameSetUp(duration_in_seconds);
+
+}
+
+
+// ========= Game ==========
+function gameSetUp(duration){
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    player.x = Math.random() * (canvas.width - player.width);
+    player.y = canvas.height - player.height;
+    // Set image sources
+    playerImg.src = 'assets/playerShip.png';
+    badShip1Img.src = 'assets/enemyShip1.png';
+    badShip2Img.src = 'assets/enemyShip2.png';
+    badShip3Img.src = 'assets/enemyShip3.png';
+    badShip4Img.src = 'assets/enemyShip4.png';
+    
+    gameRunning = true;
+    createEnemies()
+    startGameTimer(duration);
+    updateEnemyPositions()
+    gameLoop()
+};
+
+
+let timerInterval;
+function startGameTimer(duration) {
+    // Reset timer if it's already running
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    const timerDisplay = document.getElementById('timerDisplay');
+    
+    // Update timer display function
+    const updateDisplay = (timeInSeconds) => {
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
+    updateDisplay(duration);
+
+    timerInterval = setInterval(function() {
+        duration--;
+        updateDisplay(duration);
+        
+        if (duration <= 0) {
+            clearInterval(timerInterval);
+            gameRunning = false; 
+            cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+            alert('Game Over!');
+        }
+    }, 1000);
+}
+
+
+function updateGame(){
+    if(!gameRunning) return;
+    if (keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["ArrowDown"]) player.y += player.speed;
+    if (keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["ArrowRight"]) player.x += player.speed;
+
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
+
+    updateEnemyPositions()
+}
+
+function drawGame(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+    enemyShips.forEach(enemy => {
+        ctx.drawImage(
+            enemy.image,
+            enemy.x,
+            enemy.y,
+            enemy.width,
+            enemy.height
+        );
+    });
+}
+
+function gameLoop() {
+    if (!gameRunning) return;
+    updateGame();
+    drawGame();
+    gameLoopId = requestAnimationFrame(gameLoop);
+}
+
+
+// ====== Game Utils ======
+function createEnemies(){
+    const rows = 4;
+    const cols = 5;
+    const spacing = 8;
+    const enemyWidth = 50;
+    const enemyHeight = 50;
+    let image; 
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const x = c * (enemyWidth + spacing); 
+            const y = r * (enemyHeight + spacing); 
+            
+
+            switch(r) {
+                case 0:
+                    image = badShip1Img; 
+                    break;
+                case 1:
+                    image = badShip2Img; 
+                    break;
+                case 2:
+                    image = badShip3Img; 
+                    break;
+                case 3:
+                    image = badShip4Img; 
+                    break;
+            }
+            enemyShips.push({
+                x: x,
+                y: y,
+                width: enemyWidth,
+                height: enemyHeight,
+                image: image,
+                row: r
+            });
+        }
+    }
+}
+
+
+let enemyDirection = 1; // 1 for right, -1 for left
+const enemySpeed = 2; // Speed of enemy movement
+
+function updateEnemyPositions() {
+    let reachedBoundary = false;
+
+    enemyShips.forEach(enemy => {
+        enemy.x += enemySpeed * enemyDirection;
+        if (enemy.x + 0.5*enemy.width >= canvas.width || enemy.x - 0.5*enemy.width <= 0) {
+            reachedBoundary = true;
+        }
+    });
+
+    // If a boundary is reached reverse direction and move enemies down
+    if (reachedBoundary) {
+        enemyDirection *= -1; // Reverse direction
+        enemyShips.forEach(enemy => {
+        });
+    }
+}
+
+// function createPlayerBullet(){
+
+// }
