@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
             dialog.close();
         }
+    
+    
+    
     });
 
     // ========== Handle ESC key to close modal ==========
@@ -56,6 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             dialog.close();
         }
     });
+
+    document.addEventListener("keydown", e => keys[e.key] = true);
+    document.addEventListener("keyup", e => delete keys[e.key]);
 });
 
 
@@ -148,7 +154,8 @@ function handle_config(event){
         return;
     }
     const duration=parseInt(time_to_play.value);
-    if(duration<2){
+    const duration_in_seconds=duration*60;
+    if(duration_in_seconds<120){
         //errors.push("Please enter a valid duration time");
         //displayMessage("Duration time is not valid!.", 'error', 'configMessage');
         alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
@@ -158,20 +165,91 @@ function handle_config(event){
     document.getElementById('configMessage').textContent = "";
     clearFormFields("configForm")
     showSection('game')
+    gameSetUp(duration_in_seconds);
 
 }
 
-function isValidUser(username, password) {
-    return users.some(user => user.username === username && user.password === password);
-}
 
-function displayMessage(message, type, elementId = 'signupMessage') {
-    const messageElement = document.getElementById(elementId);
-    if (messageElement) {
-        messageElement.textContent = message;
-        messageElement.style.color = type === 'success' ? 'green' : 'red';
+
+let canvas = document.getElementById('gameCanvas');
+let ctx = canvas.getContext('2d');
+const upperLimit = canvas.height * 0.6;
+let player = {
+    x: 0, y: 0, width: 80, height: 80, speed: 5
+};
+let gameTime;
+let keys = {};
+
+
+function gameSetUp(duration){
+    player.x = Math.random() * (canvas.width - player.width);
+    player.y = canvas.height - player.height;
+
+    let playerImg = new Image();
+    playerImg.src = 'assets/playerShip.png';
+    
+    let badShip1Img = new Image();
+    badShip1Img.src = 'assets/enemyShip1.png'; 
+
+    let badShip2Img = new Image();
+    badShip2Img.src = 'assets/enemyShip2.png'; 
+
+    let badShip3Img = new Image();
+    badShip3Img.src = 'assets/enemyShip3.png';
+    
+    startGameTimer(duration);
+
+};
+
+let timerInterval;
+function startGameTimer(duration) {
+    // Reset timer if it's already running
+    if (timerInterval) {
+        clearInterval(timerInterval);
     }
+    // gameTime = 120;
+
+    timerInterval = setInterval(function() {
+        duration--;
+        
+        // Convert to minutes and seconds
+        const minutes = Math.floor(duration / 60);
+        const seconds = duration % 60;
+        
+        // Display time in format MM:SS
+        $('#gameTimer').text(`Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+        
+        // When time runs out
+        if (duration <= 0) {
+            clearInterval(timerInterval);
+            // Add your game over logic here
+            alert('Game Over!');
+        }
+    }, 1000);
 }
+
+
+function updateGame(){
+    if (keys["ArrowUp"]) player.y -= player.speed;
+    if (keys["ArrowDown"]) player.y += player.speed;
+    if (keys["ArrowLeft"]) player.x -= player.speed;
+    if (keys["ArrowRight"]) player.x += player.speed;
+
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
+}
+
+function drawGame(){
+
+}
+
+function gameLoop() {
+    if (!gameRunning) return;
+    updateGame();
+    drawGame();
+    gameLoopId = requestAnimationFrame(gameLoop);
+}
+
 
 function populateDays() {
     const daySelect = document.getElementById('birthDay');
@@ -207,6 +285,15 @@ function populateYears() {
         yearSelect.appendChild(option);
     }
 }
+function displayMessage(message, type, elementId = 'signupMessage') {
+    const messageElement = document.getElementById(elementId);
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.style.color = type === 'success' ? 'green' : 'red';
+    }
+}
+
+
 
 function clearFormFields(formId) {
     const form = document.getElementById(formId);
@@ -214,83 +301,6 @@ function clearFormFields(formId) {
         form.reset(); // Clears all inputs in the form
     }
 }
-
-const upperLimit = canvas.height * 0.6;
-let canvas = document.getElementById('gameCanvas');
-let ctx = canvas.getContext('2d');
-let player = {
-    x: 0, y: 0, width: 80, height: 80, speed: 5
-};
-let gameTime;
-let keys = {};
-document.addEventListener("keydown", e => keys[e.key] = true);
-document.addEventListener("keyup", e => delete keys[e.key]);
-document.addEventListener("keyleft", e => delete keys[e.key]);
-
-function gameSetUp(){
-    player.x = Math.random() * (canvas.width - player.width);
-    player.y = canvas.height - player.height;
-
-    playerImg = new Image();
-    playerImg.src = 'assets/playerShip';
-    
-    badShip1Img = new Image();
-    badShip1Img.src = 'assets/enemyShip1.png'; 
-
-    badShip2Img = new Image();
-    badShip2Img.src = 'assets/enemyShip2.png'; 
-
-    badShip3Img = new Image();
-    badShip3Img.src = 'assets/enemyShip3.png';
-    
-    startGameTimer();
-
-};
-
-function startGameTimer() {
-    // Reset timer if it's already running
-    if (timerInterval) {
-        clearInterval(timerInterval);
-    }
-    gameTime = 120;
-
-    timerInterval = setInterval(function() {
-        gameTime--;
-        
-        // Convert to minutes and seconds
-        const minutes = Math.floor(gameTime / 60);
-        const seconds = gameTime % 60;
-        
-        // Display time in format MM:SS
-        $('#gameTimer').text(`Time: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-        
-        // When time runs out
-        if (gameTime <= 0) {
-            clearInterval(timerInterval);
-            // Add your game over logic here
-            alert('Game Over!');
-        }
-    }, 1000);
-}
-
-
-function updateGame(){
-    if (keys["ArrowUp"]) player.y -= player.speed;
-    if (keys["ArrowDown"]) player.y += player.speed;
-    if (keys["ArrowLeft"]) player.x -= player.speed;
-    if (keys["ArrowRight"]) player.x += player.speed;
-
-    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
-    player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
-}
-
-function drwaGame(){
-
-}
-
-function gameLoop() {
-    if (!gameRunning) return;
-    updateGame();
-    drawGame();
-    gameLoopId = requestAnimationFrame(gameLoop);
+function isValidUser(username, password) {
+    return users.some(user => user.username === username && user.password === password);
 }
