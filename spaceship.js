@@ -87,17 +87,19 @@ let gameRunning = false;
 let gameLoopId = null;
 const upperLimit = canvas.height * 0.6;
 let player = {
-    x: 0, y: 0, width: 80, height: 80, speed: 5
+    x: 0, y: 0, width: 60, height: 60, speed: 5
 };
 let gameTime;
 let keys = {};
 let enemyShips = [];
 let enemyBullets = [];
+let enemyCanShoot = true;
 let playerImg = new Image();
 let badShip1Img = new Image();
 let badShip2Img = new Image();
 let badShip3Img = new Image();
 let badShip4Img = new Image();
+let enemyBulletImg = new Image();
 const enemyBulletLimit = 0.75 * canvas.height;
  
 
@@ -337,19 +339,23 @@ function updateGame(){
     player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
 
     updateEnemyPositions()
+    updateEnemyBulletPositions()
 }
 
 function drawGame(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+    
     enemyShips.forEach(enemy => {
-        ctx.drawImage(
-            enemy.image,
-            enemy.x,
-            enemy.y,
-            enemy.width,
-            enemy.height
-        );
+        ctx.drawImage( enemy.image, enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+
+    if (enemyCanShoot){
+        enemyShoot()
+        enemyCanShoot = false;
+    }
+    enemyBullets.forEach(bullet => {
+        ctx.drawImage(bullet.image, bullet.x, bullet.y, bullet.width, bullet.height);
     });
 }
 
@@ -372,8 +378,7 @@ function createEnemies(){
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const x = c * (enemyWidth + spacing); 
-            const y = r * (enemyHeight + spacing); 
-            
+            const y = r * (enemyHeight + spacing) + 4; 
 
             switch(r) {
                 case 0:
@@ -428,17 +433,29 @@ function playerShoot(){
 }
 
 function enemyShoot() {
+    enemyBulletImg.src = 'assets/enemyBullet.png'
     const randomEnemy = enemyShips[Math.floor(Math.random() * enemyShips.length)];
     // Create a bullet object
     const bullet = {
-        x: randomEnemy.x + randomEnemy.width / 2 - 2, 
+        x: randomEnemy.x + randomEnemy.width / 2 - 2, //needs to change by the speed of the enemy
         y: randomEnemy.y + randomEnemy.height, 
-        width: 10, 
-        height: 15, 
+        width: 25, 
+        height: 25,
+        image: enemyBulletImg, 
         speed: enemySpeed // Bullet speed matches enemySpeed need to be change 
     };
 
     enemyBullets.push(bullet);
     
+}
+
+function updateEnemyBulletPositions(){
+    enemyBullets.forEach(bullet => {
+        bullet.y += bullet.speed; 
+    });
+    enemyBullets = enemyBullets.filter(bullet => bullet.y < canvas.height);
+    if (enemyBullets.length === 0 || enemyBullets[enemyBullets.length -1].y >= enemyBulletLimit){
+        enemyCanShoot = true;
+    }
 }
 
