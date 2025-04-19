@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // Optionally reset game state here
     });
+
+    document.getElementById('close').addEventListener('click', function() {
+        document.getElementById('gameOverDialog').classList.add('hidden');
+    });
+
+
+    
 });
 
 // ========= utilities ==========
@@ -343,9 +350,10 @@ function startGameTimer(duration) {
         updateDisplay(duration);
         
         if (duration <= 0 && player.points<100) {
-            endGame(timer_less_100);
+            endGame('timer_less_100');
+
         }
-        else{endGame(timer_more_100)}
+        else if(duration <= 0 && player.points>=100){endGame('timer_more_100')}
     }, 1000);
 }
 
