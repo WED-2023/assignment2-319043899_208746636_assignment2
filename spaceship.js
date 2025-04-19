@@ -370,7 +370,7 @@ function updateGame(){
             }
             }
         });
-        document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
+        document.getElementById('game_score').textContent = `${player.points}`;
 
         // Remove bullets that go off-screen
         if (bullet.y + bullet.height < 0) {
