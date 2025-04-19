@@ -182,7 +182,7 @@ footer {
     text-align: center;
 }
 
-.canvas-container {
+/* .canvas-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -190,10 +190,23 @@ footer {
     height: 100vh; 
     overflow: hidden; 
     position: relative;
+} */
+
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black; /* אם תרצה מסך כהה מסביב */
 }
 
+
 #gameCanvas {
-    display: block;
+    /* display: block;
     background-color: #000033; 
     border: 2px solid #444; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
@@ -202,7 +215,14 @@ footer {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100vh; */
+
+    display: block;
+    background-color: #000033; 
+    border: 2px solid #444; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    width: 960px;   /* לדוגמה */
+    height: 540px;  /* לדוגמה */
 }
 
 #gameTimer {
