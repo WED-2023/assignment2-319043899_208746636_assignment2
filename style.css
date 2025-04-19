@@ -153,7 +153,6 @@ footer {
     margin-bottom: 15px;
 }
 
-/* Style for the Signup button */
 #signup button {
     padding: 10px 20px;
     background-color: #512da8;
@@ -264,17 +263,17 @@ footer {
 
 /* Align buttons to the left */
 #exitButton, #playAgainButton {
-    display: block; /* Stack buttons vertically */
-    margin: 10px 0; /* Add spacing between buttons */
-    text-align: left; /* Align text inside the buttons to the left */
-    width: auto; /* Ensure buttons don't stretch unnecessarily */
-    padding: 10px 20px; /* Add padding for better appearance */
-    background-color: #512da8; /* Button background color */
-    color: white; /* Button text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Add rounded corners */
+    display: block; 
+    margin: 10px 0; 
+    text-align: left; 
+    width: auto; 
+    padding: 10px 20px; 
+    background-color: #512da8; 
+    color: white; 
+    border: none; 
+    border-radius: 15px;
     cursor: pointer; /* Show pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    transition: background-color 0.3s ease; 
 }
 
 #exitButton:hover, #playAgainButton:hover {
@@ -299,6 +298,10 @@ footer {
 #exitButton:hover, #playAgainButton:hover {
     background-color: #673ab7; /* Change background color on hover */
 }
+#finalScore {
+    font-weight: bold; /* Make the text bold */
+    font-size: 20px; /* Optional: Adjust the font size */
+}
 
 #scoreboard {
     margin-top: 20px;
@@ -307,15 +310,18 @@ footer {
     color: white;
     border-radius: 8px;
     text-align: center;
+    font-size: 20px;
 }
 
 #scoreboard h3 {
+    font-size: 24px;
     margin-bottom: 10px;
 }
 
 #scoreboard ul {
     list-style: none;
     padding: 0;
+    font-size: 18px;
 }
 
 #scoreboard li {

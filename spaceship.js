@@ -4,8 +4,6 @@ const users = [
     { username: '1', password: '1' } //delete before applying 
 ];
 
-
-
 // =========Main function ============
 document.addEventListener('DOMContentLoaded', () => {
     showSection('welcome');
@@ -73,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     document.getElementById('exitButton').addEventListener('click', function() {
-        gameRunning = false;
+        resetGame()
         document.querySelector('header').style.display = 'block';
         document.querySelector('nav').style.display = 'flex';
         showSection('welcome');
@@ -84,68 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('playAgainButton').addEventListener('click', function () {
-        // // Hide the Game Over dialog if it's visible
-        // //document.getElementById('gameOverDialog').classList.add('hidden');
-    
-        // // Reset player state
-        // player.points = 0;
-        // player.lives = 3;
-        // player.x = playerStartPositionX;
-        // player.y = playerStartPositionY;
-    
-        // // Reset game objects
-        // enemyShips = [];
-        // playerBullets = [];
-        // enemyBullets = [];
-        // enemySpeed = 2; // Reset enemy speed
-        // enemyDirection = 1; // Reset enemy movement direction
-        // count_acc = 0;
-
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    
-        // // Reset UI elements
-        // document.getElementById('game_score').textContent = player.points;
-        // document.getElementById('lives').textContent = player.lives;
-    
-        // // Recreate enemies
-        // createEnemies();
-    
-        // // Restart the game timer (e.g., 2 minutes by default)
-        // //const duration = 2 * 60; // 2 minutes in seconds
-        // startGameTimer(duration);
-    
-        // // Restart the game loop
-        // gameRunning = true;
-        // gameLoop();
-        gameRunning=false;
-        cancelAnimationFrame(gameLoopId); // Cancel the animation frame
-        player.points = 0;
-        player.lives = 3;
-        playerBullets = [];
-        enemyBullets = [];
-        enemyShips = [];
-        enemyDirection = 1;
-        enemySpeed = 2;
-        count_acc = 0;
-        playerCanShoot = true;
-        enemyCanShoot = true;
-           
-        //enemyBulletSpeed = enemySpeed;
-
-
-
-
-        document.getElementById('game_score').textContent = player.points;
-        document.getElementById('lives').textContent = player.lives;
-    
-        player.x = Math.random() * (canvas.width - player.width);
-        player.y = canvas.height - player.height;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        resetGame()
         gameSetUp(duration_in_seconds);
-
     });
 
 
@@ -326,6 +264,9 @@ function handle_login(event) {
             scoreboard.remove();
         }
 
+        // Clear the error message
+        document.getElementById('loginMessage').textContent = "";
+
     } else {
         displayMessage("Invalid username or password.", 'error', 'loginMessage');
     }
@@ -337,8 +278,6 @@ function isValidUser(username, password) {
 
 // ======= Game Configuration ==========
 function handle_config(event){
-    //const errors = [];
-
     event.preventDefault();
 
     const play_button=document.getElementById("shootKey")
@@ -347,7 +286,6 @@ function handle_config(event){
     const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
     if (!validShootKey || !play_button_value) {
         alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
-
         return;
     }
 
@@ -356,17 +294,15 @@ function handle_config(event){
     window.shootKey = play_button_value
     document.getElementById('configMessage').textContent = "";
     clearFormFields("configForm")
-    console.log('Switching to game section');
     showSection('game')
-    console.log('Starting game setup');
     gameSetUp(duration_in_seconds);
 
 }
 
 
-// ========= Game ==========
+// ========= Game ===================
 function gameSetUp(duration){
-
+    keys = {};
     document.querySelector('header').style.display = 'none';
     document.querySelector('nav').style.display = 'none';
     //document.body.style.overflow = 'hidden';
@@ -386,7 +322,7 @@ function gameSetUp(duration){
 
     // Start background music
     const backgroundMusic = document.getElementById('backgroundMusic');
-    backgroundMusic.volume = 0.5; 
+    backgroundMusic.volume = 0.4; 
     backgroundMusic.play();
     
     gameRunning = true;
@@ -402,6 +338,7 @@ function startGameTimer(duration) {
     // Reset timer if it's already running
     if (timerInterval) {
         clearInterval(timerInterval);
+        timerInterval = null;
     }
     const timerDisplay = document.getElementById('timerDisplay');
     
@@ -478,8 +415,10 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
+// ====== End Game and New Game=======
 function endGame(status) {
     clearInterval(timerInterval);
+    timerInterval = null;
     gameRunning = false; 
     cancelAnimationFrame(gameLoopId); // Cancel the animation frame
 
@@ -505,6 +444,70 @@ function endGame(status) {
     createScoreBoard()
 }
 
+function resetGame(){
+    // Stop music
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+
+    gameRunning = false;
+    cancelAnimationFrame(gameLoopId);
+    
+    // Reset the interval reference
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null; 
+    }
+    
+    player.points = 0;
+    player.lives = 3;
+    playerBullets = [];
+    enemyBullets = [];
+    enemyShips = [];
+    enemyDirection = 1;
+    enemySpeed = 2;
+    count_acc = 0;
+    playerCanShoot = true;
+    enemyCanShoot = true;
+
+    document.getElementById('game_score').textContent = player.points;
+    document.getElementById('lives').textContent = player.lives;
+
+    playerStartPositionX = Math.random() * (canvas.width - player.width);
+    player.x = playerStartPositionX;
+    player.y = playerStartPositionY;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function createScoreBoard() {
+    // Remove the existing scoreboard if it exists
+    const existingScoreboard = document.getElementById('scoreboard');
+    if (existingScoreboard) {
+        existingScoreboard.remove();
+    }
+
+    const $scoreboard = $("<div>", { id: "scoreboard" });
+    $scoreboard.append("<h3>Scoreboard</h3>");
+
+    if (currentPlayer && scoreHistory[currentPlayer]) {
+        const scores = [...scoreHistory[currentPlayer]].sort((a, b) => b - a); 
+        const currentScore = player.points;
+        const position = scores.indexOf(currentScore) + 1;
+
+        const $scoreList = $("<ul>");
+        scores.forEach((score, index) => {
+            $scoreList.append(`<li>${index + 1}. ${score}</li>`);
+        });
+
+        $scoreboard.append(`<p>Current Position: ${position}</p>`);
+        $scoreboard.append($scoreList);
+    } else {
+        $scoreboard.append("<p>No scores available.</p>");
+    }
+
+    $("#gameOverDialog").append($scoreboard);
+}
 
 // ====== Game Utils ======
 function createEnemies(){
@@ -617,7 +620,7 @@ function updateEnemyBulletPositions() {
 
             player.lives--;
             if (player.lives <= 0) {
-                endGame();
+                endGame('no_life');
             }
 
             player.x = playerStartPositionX;
@@ -690,26 +693,4 @@ function isColliding(bullet, ship) {
     );
 }
 
-function createScoreBoard() {
-    const $scoreboard = $("<div>", { id: "scoreboard" });
-    $scoreboard.append("<h3>Scoreboard</h3>");
-
-    if (currentPlayer && scoreHistory[currentPlayer]) {
-        const scores = [...scoreHistory[currentPlayer]].sort((a, b) => b - a); 
-        const currentScore = player.points;
-        const position = scores.indexOf(currentScore) + 1;
-
-        const $scoreList = $("<ul>");
-        scores.forEach((score, index) => {
-            $scoreList.append(`<li>${index + 1}. ${score}</li>`);
-        });
-
-        $scoreboard.append(`<p>Current Position: ${position}</p>`);
-        $scoreboard.append($scoreList);
-    } else {
-        $scoreboard.append("<p>No scores available.</p>");
-    }
-
-    $("#gameOverDialog").append($scoreboard);
-}
 
