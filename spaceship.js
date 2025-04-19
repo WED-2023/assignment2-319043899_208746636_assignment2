@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         keys[event.key] = true;
         if (event.key === window.shootKey){
             // Handle shooting action
-            createPlayerBullet();
+            playerShoot();
         }
         if (event.key === "Escape" && dialog.open) {
             dialog.close();
@@ -93,6 +93,7 @@ let gameTime;
 let keys = {};
 let enemyShips = [];
 let enemyBullets = [];
+let playerBullets = [];
 let playerImg = new Image();
 let badShip1Img = new Image();
 let badShip2Img = new Image();
@@ -340,6 +341,26 @@ function updateGame(){
     player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
     player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
 
+    playerBullets.forEach((bullet, index) => {
+        bullet.y -= bullet.speed; // Move the bullet upward
+
+        enemyShips.forEach((enemy, enemyIndex) => {
+            if (isColliding(bullet, enemy)) {
+                // Remove the bullet and the enemy
+                playerBullets.splice(index, 1);
+                enemyShips.splice(enemyIndex, 1);
+
+                // Optionally, increase the player's score
+                player.points = (player.points || 0) + 10;
+            }
+        });
+
+        // Remove bullets that go off-screen
+        if (bullet.y + bullet.height < 0) {
+            playerBullets.splice(index, 1); // Remove bullets that go off-screen
+        }
+    });
+    
     updateEnemyPositions()
 }
 
@@ -354,6 +375,12 @@ function drawGame(){
             enemy.width,
             enemy.height
         );
+    });
+
+    // Draw player bullets
+    playerBullets.forEach(bullet => {
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     });
 }
 
@@ -427,8 +454,22 @@ function updateEnemyPositions() {
     }
 }
 
-function playerShoot(){
+let canShoot = true;
+function playerShoot() {
+    if (!canShoot) return;
+    const bullet = {
+        x: player.x + player.width / 2 - 5, // Center the bullet horizontally
+        y: player.y, // Start at the player's position
+        width: 10,
+        height: 20,
+        speed: 10 // Bullet speed
+    };
+    playerBullets.push(bullet);
 
+    canShoot = false; // Set cooldown
+    setTimeout(() => {
+        canShoot = true; // Reset cooldown after 1 second
+    }, 300);
 }
 
 function updateEnemySpeed(){
@@ -448,5 +489,14 @@ function enemyShoot() {
 
     enemyBullets.push(bullet);
     
+}
+
+function isColliding(rect1, rect2) {
+    return (
+        rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.y + rect1.height > rect2.y
+    );
 }
 
