@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add logic here to go back to welcome mode
         // For example:
         document.querySelector('header').style.display = 'block';
-        document.querySelector('nav').style.display = 'block';
-        document.querySelector('.canvas-container').style.display = 'none';
+        document.querySelector('nav').style.display = 'flex';
+        // document.querySelector('.canvas-container').style.display = 'none';
         showSection('welcome');
     
         // Optionally reset game state here
@@ -251,10 +251,10 @@ function handle_config(event){
 
     const duration=parseInt(time_to_play.value);
     const duration_in_seconds=duration*60;
-    if(duration_in_seconds<120){
-        alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
-        return;
-    }
+    // if(duration_in_seconds<120){
+    //     alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
+    //     return;
+    // }
 
     window.shootKey = play_button_value
     document.getElementById('configMessage').textContent = "";
@@ -295,6 +295,7 @@ function gameSetUp(duration){
 
 
 let timerInterval;
+let count_acc=0
 function startGameTimer(duration) {
     // Reset timer if it's already running
     if (timerInterval) {
@@ -312,6 +313,10 @@ function startGameTimer(duration) {
 
     timerInterval = setInterval(function() {
         duration--;
+        if(duration%5==0 && count_acc<=4){
+            updateEnemySpeed();
+            count_acc+=1;
+        }
         updateDisplay(duration);
         
         if (duration <= 0) {
@@ -326,7 +331,6 @@ function startGameTimer(duration) {
         }
     }, 1000);
 }
-
 
 function updateGame(){
     if(!gameRunning) return;
@@ -408,7 +412,7 @@ function createEnemies(){
 
 
 let enemyDirection = 1; // 1 for right, -1 for left
-const enemySpeed = 2; // Speed of enemy movement
+let enemySpeed = 2; // Speed of enemy movement
 
 function updateEnemyPositions() {
     let reachedBoundary = false;
@@ -430,6 +434,10 @@ function updateEnemyPositions() {
 
 function playerShoot(){
 
+}
+
+function updateEnemySpeed(){
+    enemySpeed+=3;
 }
 
 function enemyShoot() {
