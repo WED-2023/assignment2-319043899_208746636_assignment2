@@ -24,8 +24,8 @@ header {
     border-bottom: 2px solid #444;
 }
 header .logo {
-    height: 80px; /* Adjust this to a smaller size */
-    width: auto; /* Keep the aspect ratio intact */
+    height: 80px; 
+    width: auto; 
 }
 
 header h1 {
@@ -82,7 +82,6 @@ main {
     padding: 20px;
 }
 
-/* FOOTER */
 footer {
     background-color: rgba(20, 20, 20, 0.9);
     color: #ccc;
@@ -91,29 +90,27 @@ footer {
     font-size: 14px;
     border-top: 1px solid #444;
 }
-/* הוספת סגנון לתיבת ה-login */
+
 #login {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7); /* רקע כהה שקוף */
+    background-color: rgba(0, 0, 0, 0.7); 
     padding: 20px;
     border-radius: 8px;
-    width: 300px; /* רוחב קבוע לחלון */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* הוספת צללים */
+    width: 300px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); 
     position: absolute;
-    top: 50%; /* מיקום בחלק העליון של המסך */
-    left: 50%; /* מיקום בצד השמאלי של המסך */
-    transform: translate(-50%, -50%); /* ממקם את החלון בדיוק במרכז */
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
 }
 
-/* עיצוב כל שדה בטופס */
 #login form div {
     margin-bottom: 15px;
 }
 
-/* עיצוב כפתור ההתחברות */
 #login button {
     padding: 10px 20px;
     background-color: #512da8;
@@ -125,12 +122,10 @@ footer {
     font-size: 16px;
 }
 
-/* שינוי צבע כפתור כאשר עכבר מעליו */
 #login button:hover {
     background-color: #45a049;
 }
 
-/* עיצוב הודעת שגיאה או הצלחה */
 #loginMessage {
     color: red;
     font-size: 14px;
@@ -142,14 +137,14 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7); /* Background with transparency */
+    background-color: rgba(0, 0, 0, 0.7); 
     padding: 20px;
     border-radius: 8px;
-    width: 350px; /* Fixed width for the window */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Add shadows */
+    width: 350px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); 
     position: relative;
-    top: 50%; /* Position it halfway from the top of the screen */
-    left: 50%; /* Center horizontally */
+    top: 50%; 
+    left: 50%; 
     transform: translate(-50%, -50%); /* Center the element using translate */
 }
 
@@ -204,18 +199,6 @@ footer {
     margin: auto; 
 }
 
-#gameTimer {
-    position: fixed;
-    top: 20px;
-    left: 5px;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
-}
 
 .dialog {
     position: fixed;
@@ -251,16 +234,29 @@ footer {
 .hidden {
     display: none;
 }
-#scoreDisplay {
-    position: fixed;
-    top: 80px;
-    left: 5px;
-    font-size: 24px;
-    font-weight: bold;
+
+#gameInfoBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 51, 0.9); 
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 1000;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #444; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); 
+    width: 50%;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+
+#gameTimer, #scoreDisplay, #livesDisplay {
+    margin: 0 10px;
+}
+
+#livesDisplay span {
+    color: #ff4d4d; 
+    font-weight: bold;
 }
 
