@@ -101,9 +101,12 @@ let badShip4Img = new Image();
 let enemyBulletImg = new Image();
 const enemyBulletLimit = 0.75 * canvas.height;
 const endGameStatus = {
-    win: 'You Won'
-    
-}
+    no_more_enemies: 'Champion!',
+    no_life: 'You Lost!',
+    timer_less_100: 'You can do better!',
+    timer_more_100: 'Winner!'
+
+};
  
 
 function showSection(sectionId) {
