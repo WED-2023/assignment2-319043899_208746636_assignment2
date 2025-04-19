@@ -318,10 +318,11 @@ function startGameTimer(duration) {
         }
         updateDisplay(duration);
         
-        if (duration <= 0) {
-            endGame();
+        if (duration <= 0 && player.points<100) {
+            endGame(timer_less_100);
 
         }
+        else{endGame(timer_more_100)}
     }, 1000);
 }
 
@@ -360,6 +361,7 @@ function updateGame(){
                     break;
             }
             }
+
         });
         document.getElementById('game_score').textContent = `${player.points}`;
 
@@ -403,11 +405,14 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-function endGame() {
+function endGame(status) {
     clearInterval(timerInterval);
     gameRunning = false; 
     cancelAnimationFrame(gameLoopId); // Cancel the animation frame
     // Show the game over dialog
+    const message = endGameStatus[status] || 'Game Over!';
+
+    document.querySelector('#gameOverDialog h2').textContent = message;
     document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
     document.getElementById('gameOverDialog').classList.remove('hidden');
 }
