@@ -281,3 +281,43 @@ footer {
     background-color: #673ab7; /* Change background color on hover */
 }
 
+/* Align buttons to the left */
+#exitButton, #playAgainButton {
+    display: block; /* Stack buttons vertically */
+    margin: 10px 0; /* Add spacing between buttons */
+    text-align: left; /* Align text inside the buttons to the left */
+    width: auto; /* Ensure buttons don't stretch unnecessarily */
+    padding: 10px 20px; /* Add padding for better appearance */
+    background-color: #512da8; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+#exitButton:hover, #playAgainButton:hover {
+    background-color: #673ab7; /* Change background color on hover */
+}
+
+#scoreboard {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 51, 0.8);
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#scoreboard h3 {
+    margin-bottom: 10px;
+}
+
+#scoreboard ul {
+    list-style: none;
+    padding: 0;
+}
+
+#scoreboard li {
+    margin: 5px 0;
+}
