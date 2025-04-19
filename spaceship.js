@@ -75,6 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // Optionally reset game state here
     });
+
+    document.getElementById('close').addEventListener('click', function() {
+        document.getElementById('gameOverDialog').classList.add('hidden');
+    });
+
+
+    
 });
 
 // ========= utilities ==========
@@ -323,10 +330,10 @@ function startGameTimer(duration) {
         updateDisplay(duration);
         
         if (duration <= 0 && player.points<100) {
-            endGame(timer_less_100);
+            endGame('timer_less_100');
 
         }
-        else{endGame(timer_more_100)}
+        else if(duration <= 0 && player.points>=100){endGame('timer_more_100')}
     }, 1000);
 }
 
@@ -368,7 +375,7 @@ function updateGame(){
 
         });
         if (enemyShips.length === 0){
-            endGame()
+            endGame('no_more_enemies')
         }
         document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
         document.getElementById('game_score').textContent = `${player.points}`;
@@ -532,7 +539,7 @@ function updateEnemyBulletPositions() {
         if (isColliding(bullet, player)) {
             player.life--;
             if (player.life <= 0) {
-                endGame();
+                endGame('no_life');
             }
 
             player.x = playerStartPositionX;
