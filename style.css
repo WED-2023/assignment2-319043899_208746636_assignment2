@@ -199,8 +199,9 @@ footer {
     background-color: #000033; 
     border: 2px solid #444; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
-    width: 1150px;   
-    height: 650px; 
+    width: 80vw;   
+    height: 75vh;
+    margin: auto; 
 }
 
 #gameTimer {
@@ -215,8 +216,6 @@ footer {
     border-radius: 5px;
     z-index: 1000;
 }
-
-
 
 .dialog {
     position: fixed;

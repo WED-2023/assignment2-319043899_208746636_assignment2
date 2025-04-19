@@ -82,10 +82,14 @@ let canvas = document.getElementById('gameCanvas');
 let ctx = canvas.getContext('2d');
 let gameRunning = false;
 let gameLoopId = null;
+let timerInterval;
+let count_acc=0
 const upperLimit = canvas.height * 0.6;
 let player = {
     x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0, life: 3
 };
+let playerStartPositionX = Math.random() * (canvas.width - player.width); 
+let playerStartPositionY = canvas.height - player.height;
 let gameTime;
 let keys = {};
 let enemyShips = [];
@@ -93,6 +97,8 @@ let enemyBullets = [];
 let enemyCanShoot = true;
 let playerBullets = [];
 let playerCanShoot = true;
+let enemyDirection = 1; // 1 for right, -1 for left
+let enemySpeed = 2; // Speed of enemy movement
 let playerImg = new Image();
 let badShip1Img = new Image();
 let badShip2Img = new Image();
@@ -273,8 +279,8 @@ function gameSetUp(duration){
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    player.x = Math.random() * (canvas.width - player.width);
-    player.y = canvas.height - player.height;
+    player.x = playerStartPositionX;
+    player.y = playerStartPositionY;
 
     playerImg.src = 'assets/playerShip.png';
     badShip1Img.src = 'assets/enemyShip1.png';
@@ -290,8 +296,7 @@ function gameSetUp(duration){
 };
 
 
-let timerInterval;
-let count_acc=0
+
 function startGameTimer(duration) {
     // Reset timer if it's already running
     if (timerInterval) {
@@ -311,7 +316,6 @@ function startGameTimer(duration) {
         duration--;
         if(duration%5==0 && count_acc<=4){
             updateEnemySpeed();
-            count_acc+=1;
         }
         updateDisplay(duration);
         
@@ -358,6 +362,9 @@ function updateGame(){
             }
             }
         });
+        if (enemyShips.length === 0){
+            endGame()
+        }
         document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
 
         // Remove bullets that go off-screen
@@ -449,8 +456,7 @@ function createEnemies(){
     }
 }
 
-let enemyDirection = 1; // 1 for right, -1 for left
-let enemySpeed = 2; // Speed of enemy movement
+
 
 function updateEnemyPositions() {
     let reachedBoundary = false;
@@ -490,6 +496,7 @@ function playerShoot() {
 
 function updateEnemySpeed(){
     enemySpeed+=2;
+    count_acc+=1;
 }
 
 function enemyShoot() {
@@ -509,21 +516,25 @@ function enemyShoot() {
     
 }
 
-function updateEnemyBulletPositions(){
-    enemyBullets.forEach(bullet => {
-        bullet.y += bullet.speed; 
+function updateEnemyBulletPositions() {
+    enemyBullets = enemyBullets.filter(bullet => {
+        bullet.y += bullet.speed;
+        
         if (isColliding(bullet, player)) {
-            console.log(player.life)
-            player.life --;
+            player.life--;
             if (player.life <= 0) {
-                console.log(player.life)
                 endGame();
             }
+
+            player.x = playerStartPositionX;
+            player.y = playerStartPositionY;
+            return false;
         }
-    
+        // Remove if it's off-screen
+        return bullet.y < canvas.height;
     });
-    enemyBullets = enemyBullets.filter(bullet => bullet.y < canvas.height);
-    if (enemyBullets.length === 0 || enemyBullets[enemyBullets.length -1].y >= enemyBulletLimit){
+
+    if (enemyBullets.length === 0 || enemyBullets[enemyBullets.length - 1].y >= enemyBulletLimit) {
         enemyCanShoot = true;
     }
 }
