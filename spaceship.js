@@ -87,7 +87,7 @@ let gameRunning = false;
 let gameLoopId = null;
 const upperLimit = canvas.height * 0.6;
 let player = {
-    x: 0, y: 0, width: 80, height: 80, speed: 5
+    x: 0, y: 0, width: 80, height: 80, speed: 5 ,points: 0
 };
 let gameTime;
 let keys = {};
@@ -351,9 +351,24 @@ function updateGame(){
                 enemyShips.splice(enemyIndex, 1);
 
                 // Optionally, increase the player's score
-                player.points = (player.points || 0) + 10;
+                
+            switch(enemy.row) {
+                case 0:
+                    player.points += 20; 
+                    break;
+                case 1:
+                    player.points += 15; 
+                    break;
+                case 2:
+                    player.points += 10; 
+                    break;
+                case 3:
+                    player.points += 5; 
+                    break;
+            }
             }
         });
+        document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
 
         // Remove bullets that go off-screen
         if (bullet.y + bullet.height < 0) {
@@ -473,7 +488,7 @@ function playerShoot() {
 }
 
 function updateEnemySpeed(){
-    enemySpeed+=3;
+    enemySpeed+=2;
 }
 
 function enemyShoot() {

@@ -133,11 +133,13 @@
 
         </form>
         
-        <p id="configMessage"></p> <!-- הודעת שגיאה או הצלחה -->
+        <p id="configMessage"></p> 
     </div>
     <!-- Game Screen -->
     <div id="game" class="content-section">
         <div id="gameTimer">Time: <span id="timerDisplay">0:00</span></div>
+        <div id="scoreDisplay">Score: <span id="game_score">0</span></div>
+        <div id="livesDisplay">Lives: <span id="lives">3</span></div>
         <div class="canvas-container">
             <canvas id="gameCanvas" width="1000" height="600"></canvas>
         </div>
@@ -148,7 +150,7 @@
 
 <div id="gameOverDialog" class="dialog hidden">
     <h2>Game Over</h2>
-    <p id="finalScore">Your Score: 0</p> <!-- You will update this with actual points -->
+    <p id="finalScore">Your Score: 0</p> 
     <button id="exitButton">Exit to Welcome</button>
 </div>
   
