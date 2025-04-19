@@ -141,11 +141,17 @@
         <div class="canvas-container">
             <canvas id="gameCanvas" width="1000" height="600"></canvas>
         </div>
-        <!-- <button id="backToWelcomeBtn">Back to Welcome</button>
-        <button id="newGameButton">Start Game</button> -->
-        <!-- <button id="inGameModal" onclick="openAboutModal()">About</button> -->
+
     </div>
+    
 </main>
+
+<div id="gameOverDialog" class="dialog hidden">
+    <h2>Game Over</h2>
+    <p id="finalScore">Your Score: 0</p> <!-- You will update this with actual points -->
+    <button id="exitButton">Exit to Welcome</button>
+</div>
+  
 
 <!-- Template for the About Modal -->
 <template id="aboutTemplate">

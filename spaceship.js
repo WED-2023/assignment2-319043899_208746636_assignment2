@@ -64,6 +64,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
     });
     document.addEventListener("keyup", e => delete keys[e.key]);
+
+    document.getElementById('exitButton').addEventListener('click', function() {
+        document.getElementById('gameOverDialog').classList.add('hidden');
+        gameRunning = false;
+    
+        // Add logic here to go back to welcome mode
+        // For example:
+        document.querySelector('header').style.display = 'block';
+        document.querySelector('nav').style.display = 'block';
+        document.querySelector('.canvas-container').style.display = 'none';
+        showSection('welcome');
+    
+        // Optionally reset game state here
+    });
 });
 
 // ========= utilities ==========
@@ -253,6 +267,11 @@ function handle_config(event){
 
 // ========= Game ==========
 function gameSetUp(duration){
+
+    document.querySelector('header').style.display = 'none';
+    document.querySelector('nav').style.display = 'none';
+    //document.body.style.overflow = 'hidden';
+
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -297,7 +316,11 @@ function startGameTimer(duration) {
             clearInterval(timerInterval);
             gameRunning = false; 
             cancelAnimationFrame(gameLoopId); // Cancel the animation frame
-            alert('Game Over!');
+            //alert('Game Over!');
+            // Show the game over dialog
+            document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
+            document.getElementById('gameOverDialog').classList.remove('hidden');
+
         }
     }, 1000);
 }

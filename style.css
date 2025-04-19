@@ -16,8 +16,7 @@ body {
     background-attachment: fixed;
 }
 
-/* HEADER */
-/* HEADER */
+
 header {
     background-color: rgba(0, 0, 0, 0.85);
     padding: 20px;
@@ -148,7 +147,7 @@ footer {
     border-radius: 8px;
     width: 350px; /* Fixed width for the window */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Add shadows */
-    position: absolute;
+    position: relative;
     top: 50%; /* Position it halfway from the top of the screen */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%); /* Center the element using translate */
@@ -162,7 +161,7 @@ footer {
 /* Style for the Signup button */
 #signup button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #512da8;
     color: white;
     border: none;
     border-radius: 4px;
@@ -198,10 +197,16 @@ footer {
     background-color: #000033; 
     border: 2px solid #444; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
 }
 
 #gameTimer {
-    position: absolute;
+    position: fixed;
     top: 20px;
     left: 20px;
     font-size: 24px;
@@ -212,3 +217,41 @@ footer {
     border-radius: 5px;
     z-index: 1000;
 }
+
+
+
+.dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(30, 30, 30, 0.95);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 2000;
+    box-shadow: 0 0 20px black;
+    min-width: 300px;
+}
+
+.dialog button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-top: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: #ff3333;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.dialog button:hover {
+    background-color: #cc0000;
+}
+
+.hidden {
+    display: none;
+}
+
