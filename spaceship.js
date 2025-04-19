@@ -114,6 +114,8 @@ const endGameStatus = {
 
 };
  
+let scoreHistory = {}; 
+let currentPlayer = null;
 
 function showSection(sectionId) {
     const sections = document.querySelectorAll('.content-section');
@@ -234,6 +236,18 @@ function handle_login(event) {
         alert("Login successful!");
         clearFormFields("loginForm")
         showSection('config');
+
+        // Set the current player and initialize their score history
+        currentPlayer = username;
+        if (!scoreHistory[currentPlayer]) {
+            scoreHistory[currentPlayer] = [];
+        }
+        // Clear the scoreboard for the new player
+        const scoreboard = document.getElementById('scoreboard');
+        if (scoreboard) {
+            scoreboard.remove();
+        }
+
     } else {
         displayMessage("Invalid username or password.", 'error', 'loginMessage');
     }
@@ -291,6 +305,11 @@ function gameSetUp(duration){
     badShip2Img.src = 'assets/enemyShip2.png';
     badShip3Img.src = 'assets/enemyShip3.png';
     badShip4Img.src = 'assets/enemyShip4.png';
+
+    // Start background music
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.volume = 0.5; 
+    backgroundMusic.play();
     
     gameRunning = true;
     createEnemies()
@@ -341,44 +360,7 @@ function updateGame(){
     player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
     player.y = Math.max(upperLimit, Math.min(canvas.height - player.height, player.y));
 
-    playerBullets.forEach((bullet, index) => {
-        bullet.y -= bullet.speed; // Move the bullet upward
-
-        enemyShips.forEach((enemy, enemyIndex) => {
-            if (isColliding(bullet, enemy)) {
-                // Remove the bullet and the enemy
-                playerBullets.splice(index, 1);
-                enemyShips.splice(enemyIndex, 1);
-                
-            switch(enemy.row) {
-                case 0:
-                    player.points += 20; 
-                    break;
-                case 1:
-                    player.points += 15; 
-                    break;
-                case 2:
-                    player.points += 10; 
-                    break;
-                case 3:
-                    player.points += 5; 
-                    break;
-            }
-            }
-
-        });
-        if (enemyShips.length === 0){
-            endGame()
-        }
-        document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
-        document.getElementById('game_score').textContent = `${player.points}`;
-
-        // Remove bullets that go off-screen
-        if (bullet.y + bullet.height < 0) {
-            playerBullets.splice(index, 1); 
-        }
-    });
-    
+    updatePlayerBullets();
     updateEnemyPositions()
     updateEnemyBulletPositions()
 
@@ -421,10 +403,19 @@ function endGame(status) {
     clearInterval(timerInterval);
     gameRunning = false; 
     cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+
+    // Stop music
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
     
     // Set lives to 0 explicitly
     player.lives = 0;
     document.getElementById('lives').textContent = player.lives;
+
+    if (currentPlayer) {
+        scoreHistory[currentPlayer].push(player.points);
+    }
 
     // Show the game over dialog
     const message = endGameStatus[status] || 'Game Over!';
@@ -432,6 +423,7 @@ function endGame(status) {
     document.querySelector('#gameOverDialog h2').textContent = message;
     document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
     document.getElementById('gameOverDialog').classList.remove('hidden');
+    createScoreBoard()
 }
 
 
@@ -527,7 +519,7 @@ function enemyShoot() {
         width: 25, 
         height: 25,
         image: enemyBulletImg, 
-        speed: enemySpeed // Bullet speed matches enemySpeed need to be change 
+        speed: enemySpeed 
     };
 
     enemyBullets.push(bullet);
@@ -539,6 +531,11 @@ function updateEnemyBulletPositions() {
         bullet.y += bullet.speed;
         
         if (isColliding(bullet, player)) {
+            // Play player hit sound
+            const playerHitSound = new Audio('assets/player-hit.mp3'); 
+            playerHitSound.volume = 0.7; 
+            playerHitSound.play();
+
             player.lives--;
             if (player.lives <= 0) {
                 endGame();
@@ -557,6 +554,53 @@ function updateEnemyBulletPositions() {
     }
 }
 
+function updatePlayerBullets() {
+    playerBullets.forEach((bullet, index) => {
+        bullet.y -= bullet.speed; // Move the bullet upward
+
+        enemyShips.forEach((enemy, enemyIndex) => {
+            if (isColliding(bullet, enemy)) {
+                // Play enemy hit sound
+                const enemyHitSound = new Audio('assets/enemy-hit.mp3'); 
+                enemyHitSound.volume = 0.7; 
+                enemyHitSound.play();
+
+                // Remove the bullet and the enemy
+                playerBullets.splice(index, 1);
+                enemyShips.splice(enemyIndex, 1);
+
+                // Update player points based on the enemy row
+                switch (enemy.row) {
+                    case 0:
+                        player.points += 20; 
+                        break;
+                    case 1:
+                        player.points += 15; 
+                        break;
+                    case 2:
+                        player.points += 10; 
+                        break;
+                    case 3:
+                        player.points += 5; 
+                        break;
+                }
+            }
+        });
+
+        // End the game if all enemies are destroyed
+        if (enemyShips.length === 0) {
+            endGame("no_more_enemies");
+        }
+
+        // Update the score display
+        document.getElementById('game_score').textContent = player.points;
+
+        // Remove bullets that go off-screen
+        if (bullet.y + bullet.height < 0) {
+            playerBullets.splice(index, 1); 
+        }
+    });
+}
 
 function isColliding(bullet, ship) {
     return (
@@ -567,8 +611,26 @@ function isColliding(bullet, ship) {
     );
 }
 
-function createScoreBoard(){
+function createScoreBoard() {
+    const $scoreboard = $("<div>", { id: "scoreboard" });
+    $scoreboard.append("<h3>Scoreboard</h3>");
 
+    if (currentPlayer && scoreHistory[currentPlayer]) {
+        const scores = [...scoreHistory[currentPlayer]].sort((a, b) => b - a); 
+        const currentScore = player.points;
+        const position = scores.indexOf(currentScore) + 1;
+
+        const $scoreList = $("<ul>");
+        scores.forEach((score, index) => {
+            $scoreList.append(`<li>${index + 1}. ${score}</li>`);
+        });
+
+        $scoreboard.append(`<p>Current Position: ${position}</p>`);
+        $scoreboard.append($scoreList);
+    } else {
+        $scoreboard.append("<p>No scores available.</p>");
+    }
+
+    $("#gameOverDialog").append($scoreboard);
 }
-
 
