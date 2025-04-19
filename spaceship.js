@@ -86,7 +86,7 @@ let timerInterval;
 let count_acc=0
 const upperLimit = canvas.height * 0.6;
 let player = {
-    x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0, life: 3
+    x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0, lives: 0
 };
 let playerStartPositionX = Math.random() * (canvas.width - player.width); 
 let playerStartPositionY = canvas.height - player.height;
@@ -284,6 +284,7 @@ function gameSetUp(duration){
 
     player.x = playerStartPositionX;
     player.y = playerStartPositionY;
+    player.lives = 3;
 
     playerImg.src = 'assets/playerShip.png';
     badShip1Img.src = 'assets/enemyShip1.png';
@@ -324,7 +325,6 @@ function startGameTimer(duration) {
         
         if (duration <= 0 && player.points<100) {
             endGame(timer_less_100);
-
         }
         else{endGame(timer_more_100)}
     }, 1000);
@@ -375,12 +375,16 @@ function updateGame(){
 
         // Remove bullets that go off-screen
         if (bullet.y + bullet.height < 0) {
-            playerBullets.splice(index, 1); // Remove bullets that go off-screen
+            playerBullets.splice(index, 1); 
         }
     });
     
     updateEnemyPositions()
     updateEnemyBulletPositions()
+
+    // Update the game info bar
+    document.getElementById("game_score").textContent = player.points;
+    document.getElementById("lives").textContent = player.lives; 
 }
 
 function drawGame(){
@@ -417,6 +421,11 @@ function endGame(status) {
     clearInterval(timerInterval);
     gameRunning = false; 
     cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+    
+    // Set lives to 0 explicitly
+    player.lives = 0;
+    document.getElementById('lives').textContent = player.lives;
+
     // Show the game over dialog
     const message = endGameStatus[status] || 'Game Over!';
 
@@ -513,7 +522,7 @@ function enemyShoot() {
     const randomEnemy = enemyShips[Math.floor(Math.random() * enemyShips.length)];
     // Create a bullet object
     const bullet = {
-        x: randomEnemy.x + randomEnemy.width / 2 - 2, //needs to change by the speed of the enemy
+        x: randomEnemy.x + randomEnemy.width / 2 - enemySpeed, 
         y: randomEnemy.y + randomEnemy.height, 
         width: 25, 
         height: 25,
@@ -530,8 +539,8 @@ function updateEnemyBulletPositions() {
         bullet.y += bullet.speed;
         
         if (isColliding(bullet, player)) {
-            player.life--;
-            if (player.life <= 0) {
+            player.lives--;
+            if (player.lives <= 0) {
                 endGame();
             }
 
@@ -556,6 +565,10 @@ function isColliding(bullet, ship) {
         bullet.y < ship.y + ship.height &&
         bullet.y + bullet.height > ship.y
     );
+}
+
+function createScoreBoard(){
+
 }
 
 
