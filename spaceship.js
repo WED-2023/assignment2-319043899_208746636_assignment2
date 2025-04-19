@@ -4,6 +4,8 @@ const users = [
     { username: '1', password: '1' } //delete before applying 
 ];
 
+
+
 // =========Main function ============
 document.addEventListener('DOMContentLoaded', () => {
     showSection('welcome');
@@ -54,16 +56,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========== Handle keys  ==========
     document.addEventListener('keydown', (event) => {
         keys[event.key] = true;
-        if (event.key === window.shootKey){
+        if (event.key === window.shootKey || (window.shootKey === ' ' && e.code === 'Space')){
             // Handle shooting action
             playerShoot();
         }
+
         if (event.key === "Escape" && dialog.open) {
             dialog.close();
         }
-        
+    
     });
-    document.addEventListener("keyup", e => delete keys[e.key]);
+    document.addEventListener("keyup", event =>{ 
+        if (event.key === " ") event.preventDefault();
+        delete keys[event.key]
+    });
+
 
     document.getElementById('exitButton').addEventListener('click', function() {
         gameRunning = false;
@@ -113,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // gameLoop();
         gameRunning=false;
         cancelAnimationFrame(gameLoopId); // Cancel the animation frame
-        score = 0;
-        lives = 3;
+        player.points = 0;
+        player.lives = 3;
         playerBullets = [];
         enemyBullets = [];
         enemyShips = [];
@@ -122,8 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
         enemySpeed = 2;
         count_acc = 0;
         playerCanShoot = true;
-        enemyCanShoot = true;   
+        enemyCanShoot = true;
+           
         //enemyBulletSpeed = enemySpeed;
+
+
+
 
         document.getElementById('game_score').textContent = player.points;
         document.getElementById('lives').textContent = player.lives;
@@ -133,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        gameSetUp();
+        gameSetUp(duration_in_seconds);
 
     });
 
@@ -152,6 +163,9 @@ const upperLimit = canvas.height * 0.6;
 let player = {
     x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0, lives: 0
 };
+
+let duration_in_seconds;
+
 let playerStartPositionX = Math.random() * (canvas.width - player.width); 
 let playerStartPositionY = canvas.height - player.height;
 let gameTime;
@@ -338,7 +352,7 @@ function handle_config(event){
     }
 
     const duration=parseInt(time_to_play.value);
-    const duration_in_seconds=duration*60;
+    duration_in_seconds=duration*60;
     window.shootKey = play_button_value
     document.getElementById('configMessage').textContent = "";
     clearFormFields("configForm")
