@@ -107,9 +107,12 @@ let badShip4Img = new Image();
 let enemyBulletImg = new Image();
 const enemyBulletLimit = 0.75 * canvas.height;
 const endGameStatus = {
-    win: 'You Won'
-    
-}
+    no_more_enemies: 'Champion!',
+    no_life: 'You Lost!',
+    timer_less_100: 'You can do better!',
+    timer_more_100: 'Winner!'
+
+};
  
 
 function showSection(sectionId) {
@@ -319,10 +322,11 @@ function startGameTimer(duration) {
         }
         updateDisplay(duration);
         
-        if (duration <= 0) {
-            endGame();
+        if (duration <= 0 && player.points<100) {
+            endGame(timer_less_100);
 
         }
+        else{endGame(timer_more_100)}
     }, 1000);
 }
 
@@ -361,11 +365,13 @@ function updateGame(){
                     break;
             }
             }
+
         });
         if (enemyShips.length === 0){
             endGame()
         }
         document.getElementById('game_score').textContent = `Your Score: ${player.points}`;
+        document.getElementById('game_score').textContent = `${player.points}`;
 
         // Remove bullets that go off-screen
         if (bullet.y + bullet.height < 0) {
@@ -407,11 +413,14 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-function endGame() {
+function endGame(status) {
     clearInterval(timerInterval);
     gameRunning = false; 
     cancelAnimationFrame(gameLoopId); // Cancel the animation frame
     // Show the game over dialog
+    const message = endGameStatus[status] || 'Game Over!';
+
+    document.querySelector('#gameOverDialog h2').textContent = message;
     document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
     document.getElementById('gameOverDialog').classList.remove('hidden');
 }
