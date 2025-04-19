@@ -68,9 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('exitButton').addEventListener('click', function() {
         document.getElementById('gameOverDialog').classList.add('hidden');
         gameRunning = false;
-    
-        // Add logic here to go back to welcome mode
-        // For example:
         document.querySelector('header').style.display = 'block';
         document.querySelector('nav').style.display = 'flex';
         // document.querySelector('.canvas-container').style.display = 'none';
@@ -87,7 +84,7 @@ let gameRunning = false;
 let gameLoopId = null;
 const upperLimit = canvas.height * 0.6;
 let player = {
-    x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0
+    x: 0, y: 0, width: 60, height: 60, speed: 5 ,points: 0, life: 3
 };
 let gameTime;
 let keys = {};
@@ -95,6 +92,7 @@ let enemyShips = [];
 let enemyBullets = [];
 let enemyCanShoot = true;
 let playerBullets = [];
+let playerCanShoot = true;
 let playerImg = new Image();
 let badShip1Img = new Image();
 let badShip2Img = new Image();
@@ -102,6 +100,10 @@ let badShip3Img = new Image();
 let badShip4Img = new Image();
 let enemyBulletImg = new Image();
 const enemyBulletLimit = 0.75 * canvas.height;
+const endGameStatus = {
+    win: 'You Won'
+    
+}
  
 
 function showSection(sectionId) {
@@ -243,8 +245,6 @@ function handle_config(event){
     const play_button_value=play_button.value;
     const validShootKey = /^[a-zA-Z]$/.test(play_button_value) || play_button_value === ' ';
     if (!validShootKey || !play_button_value) {
-        //errors.push("Please enter a valid shooting key (A-Z or Space).");
-        //displayMessage("Key is not valid!.", 'error', 'configMessage');
         alert("Key is not valid! Please enter a valid shooting key (A-Z or Space).");
 
         return;
@@ -252,11 +252,6 @@ function handle_config(event){
 
     const duration=parseInt(time_to_play.value);
     const duration_in_seconds=duration*60;
-    // if(duration_in_seconds<120){
-    //     alert("Duration time is not valid! Please enter a duration of at least 2 minutes.");
-    //     return;
-    // }
-
     window.shootKey = play_button_value
     document.getElementById('configMessage').textContent = "";
     clearFormFields("configForm")
@@ -321,17 +316,12 @@ function startGameTimer(duration) {
         updateDisplay(duration);
         
         if (duration <= 0) {
-            clearInterval(timerInterval);
-            gameRunning = false; 
-            cancelAnimationFrame(gameLoopId); // Cancel the animation frame
-            //alert('Game Over!');
-            // Show the game over dialog
-            document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
-            document.getElementById('gameOverDialog').classList.remove('hidden');
+            endGame();
 
         }
     }, 1000);
 }
+
 
 function updateGame(){
     if(!gameRunning) return;
@@ -351,8 +341,6 @@ function updateGame(){
                 // Remove the bullet and the enemy
                 playerBullets.splice(index, 1);
                 enemyShips.splice(enemyIndex, 1);
-
-                // Optionally, increase the player's score
                 
             switch(enemy.row) {
                 case 0:
@@ -412,6 +400,15 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
+function endGame() {
+    clearInterval(timerInterval);
+    gameRunning = false; 
+    cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+    // Show the game over dialog
+    document.getElementById('finalScore').textContent = `Your Score: ${player.points}`;
+    document.getElementById('gameOverDialog').classList.remove('hidden');
+}
+
 
 // ====== Game Utils ======
 function createEnemies(){
@@ -452,7 +449,6 @@ function createEnemies(){
     }
 }
 
-
 let enemyDirection = 1; // 1 for right, -1 for left
 let enemySpeed = 2; // Speed of enemy movement
 
@@ -474,21 +470,21 @@ function updateEnemyPositions() {
     }
 }
 
-let canShoot = true;
+
 function playerShoot() {
-    if (!canShoot) return;
+    if (!playerCanShoot) return;
     const bullet = {
         x: player.x + player.width / 2 - 5, // Center the bullet horizontally
-        y: player.y, // Start at the player's position
+        y: player.y, 
         width: 10,
         height: 20,
         speed: 10 // Bullet speed
     };
     playerBullets.push(bullet);
 
-    canShoot = false; // Set cooldown
+    playerCanShoot = false; // Set cooldown
     setTimeout(() => {
-        canShoot = true; // Reset cooldown after 1 second
+        playerCanShoot = true; 
     }, 300);
 }
 
@@ -513,22 +509,33 @@ function enemyShoot() {
     
 }
 
-function isColliding(rect1, rect2) {
-    return (
-        rect1.x < rect2.x + rect2.width &&
-        rect1.x + rect1.width > rect2.x &&
-        rect1.y < rect2.y + rect2.height &&
-        rect1.y + rect1.height > rect2.y
-    );
-}
-
 function updateEnemyBulletPositions(){
     enemyBullets.forEach(bullet => {
         bullet.y += bullet.speed; 
+        if (isColliding(bullet, player)) {
+            console.log(player.life)
+            player.life --;
+            if (player.life <= 0) {
+                console.log(player.life)
+                endGame();
+            }
+        }
+    
     });
     enemyBullets = enemyBullets.filter(bullet => bullet.y < canvas.height);
     if (enemyBullets.length === 0 || enemyBullets[enemyBullets.length -1].y >= enemyBulletLimit){
         enemyCanShoot = true;
     }
 }
+
+
+function isColliding(bullet, ship) {
+    return (
+        bullet.x < ship.x + ship.width &&
+        bullet.x + bullet.width > ship.x &&
+        bullet.y < ship.y + ship.height &&
+        bullet.y + bullet.height > ship.y
+    );
+}
+
 
