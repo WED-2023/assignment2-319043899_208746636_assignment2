@@ -66,18 +66,75 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener("keyup", e => delete keys[e.key]);
 
     document.getElementById('exitButton').addEventListener('click', function() {
-        document.getElementById('gameOverDialog').classList.add('hidden');
         gameRunning = false;
         document.querySelector('header').style.display = 'block';
         document.querySelector('nav').style.display = 'flex';
-        // document.querySelector('.canvas-container').style.display = 'none';
         showSection('welcome');
-    
-        // Optionally reset game state here
     });
 
     document.getElementById('close').addEventListener('click', function() {
         document.getElementById('gameOverDialog').classList.add('hidden');
+    });
+
+    document.getElementById('playAgainButton').addEventListener('click', function () {
+        // // Hide the Game Over dialog if it's visible
+        // //document.getElementById('gameOverDialog').classList.add('hidden');
+    
+        // // Reset player state
+        // player.points = 0;
+        // player.lives = 3;
+        // player.x = playerStartPositionX;
+        // player.y = playerStartPositionY;
+    
+        // // Reset game objects
+        // enemyShips = [];
+        // playerBullets = [];
+        // enemyBullets = [];
+        // enemySpeed = 2; // Reset enemy speed
+        // enemyDirection = 1; // Reset enemy movement direction
+        // count_acc = 0;
+
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    
+        // // Reset UI elements
+        // document.getElementById('game_score').textContent = player.points;
+        // document.getElementById('lives').textContent = player.lives;
+    
+        // // Recreate enemies
+        // createEnemies();
+    
+        // // Restart the game timer (e.g., 2 minutes by default)
+        // //const duration = 2 * 60; // 2 minutes in seconds
+        // startGameTimer(duration);
+    
+        // // Restart the game loop
+        // gameRunning = true;
+        // gameLoop();
+        gameRunning=false;
+        cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+        score = 0;
+        lives = 3;
+        playerBullets = [];
+        enemyBullets = [];
+        enemyShips = [];
+        enemyDirection = 1;
+        enemySpeed = 2;
+        count_acc = 0;
+        playerCanShoot = true;
+        enemyCanShoot = true;   
+        //enemyBulletSpeed = enemySpeed;
+
+        document.getElementById('game_score').textContent = player.points;
+        document.getElementById('lives').textContent = player.lives;
+    
+        player.x = Math.random() * (canvas.width - player.width);
+        player.y = canvas.height - player.height;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        gameSetUp();
+
     });
 
 
@@ -547,8 +604,8 @@ function updateEnemyBulletPositions() {
         bullet.y += bullet.speed;
         
         if (isColliding(bullet, player)) {
-            player.life--;
-            if (player.life <= 0) {
+            player.lives--;
+            if (player.lives <= 0) {
                 endGame('no_life');
             }
 

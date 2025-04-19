@@ -186,6 +186,8 @@ footer {
     position: fixed;
     top: 0;
     left: 0;
+    padding-left: 20px; /* Add padding for spacing */
+    gap: 20px;
 }
 
 
@@ -258,5 +260,24 @@ footer {
 #livesDisplay span {
     color: #ff4d4d; 
     font-weight: bold;
+}
+
+/* Align buttons to the left */
+#exitButton, #playAgainButton {
+    display: block; /* Stack buttons vertically */
+    margin: 10px 0; /* Add spacing between buttons */
+    text-align: left; /* Align text inside the buttons to the left */
+    width: auto; /* Ensure buttons don't stretch unnecessarily */
+    padding: 10px 20px; /* Add padding for better appearance */
+    background-color: #512da8; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+#exitButton:hover, #playAgainButton:hover {
+    background-color: #673ab7; /* Change background color on hover */
 }
 
