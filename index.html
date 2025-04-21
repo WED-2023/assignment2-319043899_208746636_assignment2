@@ -10,8 +10,23 @@
     
     <!-- Link to external JavaScript -->
     <script src="spaceship.js" defer></script>
+
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">   
+     <!-- <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> -->
 </head>
 <body>
+
+    <div class="bg"></div>
+<div class="star-field">
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+</div>
+
+
+
     <header>
        <h1></h1>
        <img src="assets/logo2.png" alt="Game Logo" class="logo">
@@ -19,25 +34,23 @@
  
     <nav>
        <button onclick="showSection('welcome')">Welcome</button>
+       <button onclick="showSection('signup')">Sign Up</button>
        <button onclick="showSection('login')">Login</button>
        <button onclick="showSection('about')">About</button>
     </nav>
  <main>
     <div id="welcome" class="content-section">
-       <h2>Welcome to the Galactic Combat Game!</h2>
-       <p>Get ready for an exciting space adventure.</p>
-       <h3>Ido Bergerzon 319043899, link to website: https://wed-2023.github.io/319043899/</h3>
-       <h3>Aviv Nachmias 208746636, link to website: https://wed-2023.github.io/208746636/</h3>
+       <h2 id="typewriter">Welcome to the Galactic Combat Game! Get ready for an exciting space adventure.</h2>
 
-       <h3></h3>
-       <button class="styled-button" onclick="showSection('login')">Login</button>
-       <button class="styled-button" onclick="showSection('signup')">Sign Up</button>
-       
+       <h3>Ido Bergerzon 319043899, link to website: <a href="https://wed-2023.github.io/319043899/" target="_blank">Louis Singer</a></h3>
+       <h3>Aviv Nachmias 208746636, link to website: <a href="https://wed-2023.github.io/208746636/" target="_blank">Aaron griner</a></h3>
+
+       <!-- <h3></h3> -->
+       <!-- <button class="styled-button" onclick="showSection('login')">Login</button> -->
     </div>
  
     <div id="signup" class="content-section">
        <h2>Sign Up</h2>
-       <p>Registration form will go here.</p>
        <form id="signupForm">
         <!-- Username -->
         <div>

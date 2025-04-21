@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById("startbutton");
     startButton.addEventListener('click', handle_config);
 
+
     // ========== Modal - About ==========
     const template = document.getElementById("aboutTemplate");
     const clone = template.content.cloneNode(true);
@@ -31,9 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const aboutButton = document.querySelector('button[onclick="showSection(\'about\')"]');
     if (aboutButton) {
+        // Remove the inline onclick attribute to prevent showSection from being called
+        aboutButton.removeAttribute("onclick");
+    
+        // Add a custom event listener to open the dialog
         aboutButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            dialog.showModal();
+            e.preventDefault(); // Prevent default behavior
+            dialog.showModal(); // Open the about dialog
         });
     }
 
@@ -87,6 +92,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const typewriterText = "Welcome to the Galactic Combat Game!";
+        const typewriterElement = document.getElementById('typewriter');
+        let index = 0;
+        let typingStarted = false; // Flag to prevent multiple calls
+    
+        function type() {
+            if (index < typewriterText.length) {
+                typewriterElement.textContent += typewriterText.charAt(index);
+                index++;
+                setTimeout(type, 100); // Adjust typing speed (in milliseconds)
+            }
+        }
+    
+        if (!typingStarted) {
+            typingStarted = true; // Set the flag to true
+            type(); // Start the typing effect
+        }
+    });
     
 });
 
@@ -289,9 +315,16 @@ function handle_config(event){
         return;
     }
 
+
     const duration=parseInt(time_to_play.value);
     duration_in_seconds=duration*60;
     window.shootKey = play_button_value
+    if (duration_in_seconds<120) {
+        alert("game duration must be at least 2 minutes!");
+        return;
+    }
+
+
     document.getElementById('configMessage').textContent = "";
     clearFormFields("configForm")
     showSection('game')

@@ -1,3 +1,8 @@
+/* @font-face {
+    font-family: 'Pixel Emulator';
+    src: url('assets/Pixel\ Emulator.otf') format('truetype');
+} */
+
 /* GENERAL BODY */
 html, body {
     height: 100%;
@@ -7,25 +12,66 @@ html, body {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-    background-image: url('assets/background2.png');
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: 'Audiowide', cursive;    color: #fff;
+    /* background-image: url('assets/background2.png'); */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
 }
 
+h1, h2, h3, p {
+    font-family: 'Audiowide', cursive;
+    color: #fff;
+    /* text-transform: uppercase; Optional: Make all text uppercase for a retro feel */
+    letter-spacing: 1px; /* Add slight spacing for readability */
+    font-size: 12px;
+}
+h2{
+    font-size: 20px;
+}
+button {
+    font-family: 'Audiowide', cursive;
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text color */
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 3px solid transparent; /* Transparent border for gradient effect */
+    border-radius: 10px; /* Rounded corners */
+    background-image: linear-gradient(90deg, #4e54c8, #8f94fb); /* Gradient border */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 0 10px rgba(78, 84, 200, 0.8), 0 0 20px rgba(143, 148, 251, 0.6); /* Glowing effect */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+button:hover {
+    background-color: rgba(78, 84, 200, 0.2); /* Slightly filled background on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+    box-shadow: 0 0 15px rgba(78, 84, 200, 1), 0 0 30px rgba(143, 148, 251, 1); /* Stronger glow on hover */
+}
+
 
 header {
-    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    background-color: rgba(0, 0, 0, 0); /* Semi-transparent background */
     padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid #444;
+    position: relative;
+    z-index: 2; /* Ensure it stays above the background */
 }
 header .logo {
-    height: 80px; 
-    width: auto; 
+    height: 120px; /* Adjust the size of the logo */
+    width: auto;
+    border: 4px solid transparent; /* Transparent border for the gradient effect */
+    border-radius: 15px; /* Rounded corners */
+    background: linear-gradient(90deg, #4e54c8, #8f94fb); /* Gradient background */
+    padding: 5px; /* Space between the logo and the border */
+    box-shadow: 0 0 15px rgba(78, 84, 200, 0.8), 0 0 30px rgba(143, 148, 251, 0.6); /* Glowing effect */
+    background-clip: padding-box; /* Ensures the gradient doesn't cover the logo */
 }
 
 header h1 {
@@ -36,31 +82,38 @@ header h1 {
 
 /* NAVIGATION BAR */
 nav {
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     gap: 15px;
     padding: 12px;
-    border-bottom: 2px solid #555;
+    /* border-bottom: 2px solid #555; */
+    z-index: 2; /* Ensure it stays above the background */
+    position: relative;
 }
 
 nav button {
-    background-color: #3a3a3a;
-    color: white;
-    border: 1px solid #666;
-    padding: 10px 18px;
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text color */
     font-size: 16px;
-    border-radius: 6px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 3px solid transparent; /* Transparent border for gradient effect */
+    border-radius: 10px; /* Rounded corners */
+    background-image: linear-gradient(90deg, #4e54c8, #8f94fb); /* Gradient border */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 0 0 10px rgba(78, 84, 200, 0.8), 0 0 20px rgba(143, 148, 251, 0.6); /* Glowing effect */
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
 }
 
 nav button:hover {
-    background-color: #5c5c5c;
-    transform: scale(1.05);
+    background-color: rgba(78, 84, 200, 0.2); /* Slightly filled background on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+    box-shadow: 0 0 15px rgba(78, 84, 200, 1), 0 0 30px rgba(143, 148, 251, 1); /* Stronger glow on hover */
 }
-.styled-button {
+/* .styled-button {
     padding: 10px 20px;
     background-color: #673ab7;
     color: white;
@@ -70,11 +123,11 @@ nav button:hover {
     font-size: 16px;
     margin: 10px;
     transition: background-color 0.3s ease;
-}
+} */
 
-.styled-button:hover {
+/* .styled-button:hover {
     background-color: #512da8;
-}
+} */
 
 /* MAIN SECTION */
 main {
@@ -91,6 +144,22 @@ footer {
     border-top: 1px solid #444;
 }
 
+
+#welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center text */
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full width */
+    position: relative;
+    background-color: rgba(0, 0, 0, 0); /* Optional: Add a semi-transparent background */
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0); /* Optional: Add a shadow for better visibility */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+
 #login {
     display: flex;
     flex-direction: column;
@@ -101,7 +170,7 @@ footer {
     border-radius: 8px;
     width: 300px; 
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); 
-    position: absolute;
+    position: relative;
     top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
@@ -111,7 +180,7 @@ footer {
     margin-bottom: 15px;
 }
 
-#login button {
+/* #login button {
     padding: 10px 20px;
     background-color: #512da8;
     color: white;
@@ -124,7 +193,7 @@ footer {
 
 #login button:hover {
     background-color: #45a049;
-}
+} */
 
 #loginMessage {
     color: red;
@@ -153,7 +222,7 @@ footer {
     margin-bottom: 15px;
 }
 
-#signup button {
+/* #signup button {
     padding: 10px 20px;
     background-color: #512da8;
     color: white;
@@ -165,9 +234,9 @@ footer {
 }
 
 /* Change button color when hovering */
-#signup button:hover {
+/* #signup button:hover {
     background-color: #45a049;
-}
+} */ 
 
 /* Error or success message */
 #signupMessage {
@@ -198,6 +267,7 @@ footer {
     width: 80vw;   
     height: 75vh;
     margin: auto; 
+    z-index: 1;
 }
 
 
@@ -216,7 +286,7 @@ footer {
     min-width: 300px;
 }
 
-.dialog button {
+/* .dialog button {
     padding: 10px 20px;
     font-size: 18px;
     margin-top: 20px;
@@ -226,11 +296,11 @@ footer {
     color: white;
     border-radius: 5px;
     transition: background-color 0.3s;
-}
+} */
 
-.dialog button:hover {
+/* .dialog button:hover {
     background-color: #cc0000;
-}
+} */
 
 .hidden {
     display: none;
@@ -262,7 +332,7 @@ footer {
 }
 
 /* Align buttons to the left */
-#exitButton, #playAgainButton {
+/* #exitButton, #playAgainButton {
     display: block; 
     margin: 10px 0; 
     text-align: left; 
@@ -272,32 +342,32 @@ footer {
     color: white; 
     border: none; 
     border-radius: 15px;
-    cursor: pointer; /* Show pointer cursor on hover */
+    cursor: pointer; 
     transition: background-color 0.3s ease; 
-}
+} */
 
-#exitButton:hover, #playAgainButton:hover {
-    background-color: #673ab7; /* Change background color on hover */
-}
+/* #exitButton:hover, #playAgainButton:hover {
+    background-color: #673ab7; 
+} */
 
 /* Align buttons to the left */
-#exitButton, #playAgainButton {
-    display: block; /* Stack buttons vertically */
-    margin: 10px 0; /* Add spacing between buttons */
-    text-align: left; /* Align text inside the buttons to the left */
-    width: auto; /* Ensure buttons don't stretch unnecessarily */
-    padding: 10px 20px; /* Add padding for better appearance */
-    background-color: #512da8; /* Button background color */
-    color: white; /* Button text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Add rounded corners */
-    cursor: pointer; /* Show pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-}
+/* #exitButton, #playAgainButton {
+    display: block; 
+    margin: 10px 0; 
+    text-align: left; 
+    width: auto; 
+    padding: 10px 20px; 
+    background-color: #512da8; 
+    color: white;
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+} */
 
-#exitButton:hover, #playAgainButton:hover {
-    background-color: #673ab7; /* Change background color on hover */
-}
+/* #exitButton:hover, #playAgainButton:hover {
+    background-color: #673ab7; 
+} */
 #finalScore {
     font-weight: bold; /* Make the text bold */
     font-size: 20px; /* Optional: Adjust the font size */
@@ -326,4 +396,181 @@ footer {
 
 #scoreboard li {
     margin: 5px 0;
+}
+
+
+
+
+
+
+.bg {
+    background: url(https://i.ibb.co/87GbbFP/2799006.jpg) no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -3;
+}
+.bg:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: #000;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    opacity: 0.3;
+}
+@keyframes sf-fly-by-1 {
+    from {
+        transform: translateZ(-600px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateZ(0);
+        opacity: 0.5;
+    }
+}
+@keyframes sf-fly-by-2 {
+    from {
+        transform: translateZ(-1200px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateZ(-600px);
+        opacity: 0.5;
+    }
+}
+@keyframes sf-fly-by-3 {
+    from {
+        transform: translateZ(-1800px);
+        opacity: 0.5;
+    }
+    to {
+        transform: translateZ(-1200px);
+        opacity: 0.5;
+    }
+}
+.star-field {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    perspective: 600px;
+    -webkit-perspective: 600px;
+    z-index: -1;
+}
+.star-field .layer {
+    box-shadow: -411px -476px #cccccc, 777px -407px #d4d4d4, -387px -477px #fcfcfc, -91px -235px #d4d4d4, 491px -460px #f7f7f7, 892px -128px #f7f7f7, 758px -277px #ededed, 596px 378px #cccccc, 647px 423px whitesmoke, 183px 389px #c7c7c7,
+        524px -237px #f0f0f0, 679px -535px #e3e3e3, 158px 399px #ededed, 157px 249px #ededed, 81px -450px #ebebeb, 719px -360px #c2c2c2, -499px 473px #e8e8e8, -158px -349px #d4d4d4, 870px -134px #cfcfcf, 446px 404px #c2c2c2,
+        440px 490px #d4d4d4, 414px 507px #e6e6e6, -12px 246px #fcfcfc, -384px 369px #e3e3e3, 641px -413px #fcfcfc, 822px 516px #dbdbdb, 449px 132px #c2c2c2, 727px 146px #f7f7f7, -315px -488px #e6e6e6, 952px -70px #e3e3e3,
+        -869px -29px #dbdbdb, 502px 80px #dedede, 764px 342px #e0e0e0, -150px -380px #dbdbdb, 654px -426px #e3e3e3, -325px -263px #c2c2c2, 755px -447px #c7c7c7, 729px -177px #c2c2c2, -682px -391px #e6e6e6, 554px -176px #ededed,
+        -85px -428px #d9d9d9, 714px 55px #e8e8e8, 359px -285px #cfcfcf, -362px -508px #dedede, 468px -265px #fcfcfc, 74px -500px #c7c7c7, -514px 383px #dbdbdb, 730px -92px #cfcfcf, -112px 287px #c9c9c9, -853px 79px #d6d6d6,
+        828px 475px #d6d6d6, -681px 13px #fafafa, -176px 209px #f0f0f0, 758px 457px #fafafa, -383px -454px #ededed, 813px 179px #d1d1d1, 608px 98px whitesmoke, -860px -65px #c4c4c4, -572px 272px #f7f7f7, 459px 533px #fcfcfc,
+        624px -481px #e6e6e6, 790px 477px #dedede, 731px -403px #ededed, 70px -534px #cccccc, -23px 510px #cfcfcf, -652px -237px whitesmoke, -690px 367px #d1d1d1, 810px 536px #d1d1d1, 774px 293px #c9c9c9, -362px 97px #c2c2c2,
+        563px 47px #dedede, 313px 475px #e0e0e0, 839px -491px #e3e3e3, -217px 377px #d4d4d4, -581px 239px #c2c2c2, -857px 72px #cccccc, -23px 340px #dedede, -837px 246px white, 170px -502px #cfcfcf, 822px -443px #e0e0e0, 795px 497px #e0e0e0,
+        -814px -337px #cfcfcf, 206px -339px #f2f2f2, -779px 108px #e6e6e6, 808px 2px #d4d4d4, 665px 41px #d4d4d4, -564px 64px #cccccc, -380px 74px #cfcfcf, -369px -60px #f7f7f7, 47px -495px #e3e3e3, -383px 368px #f7f7f7, 419px 288px #d1d1d1,
+        -598px -50px #c2c2c2, -833px 187px #c4c4c4, 378px 325px whitesmoke, -703px 375px #d6d6d6, 392px 520px #d9d9d9, -492px -60px #c4c4c4, 759px 288px #ebebeb, 98px -412px #c4c4c4, -911px -277px #c9c9c9;
+    transform-style: preserve-3d;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 4px;
+    width: 4px;
+    border-radius: 2px;
+}
+.star-field .layer:nth-child(1) {
+    animation: sf-fly-by-1 5s linear infinite;
+}
+.star-field .layer:nth-child(2) {
+    animation: sf-fly-by-2 5s linear infinite;
+}
+.star-field .layer:nth-child(3) {
+    animation: sf-fly-by-3 5s linear infinite;
+}
+
+
+#typewriter {
+    font-family: 'Audiowide', cursive;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflowing text */
+    border-right: 3px solid white; /* Add a blinking cursor */
+    width: 0; /* Start with no width */
+    animation: typing 4s steps(30, end) forwards, blink 0.5s step-end infinite alternate;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%; /* Adjust based on the text length */
+    }
+}
+
+@keyframes blink {
+    from {
+        border-color: transparent;
+    }
+    to {
+        border-color: white;
+    }
+}
+
+
+
+#aboutModal {
+    background: linear-gradient(90deg, #4e54c8, #8f94fb); /* Gradient background */
+    color: white; /* Text color */
+    border: 3px solid rgba(255, 255, 255, 0.8); /* White border */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 0 15px rgba(78, 84, 200, 0.8), 0 0 30px rgba(143, 148, 251, 0.6); /* Glowing effect */
+    padding: 20px; /* Inner spacing */
+    width: 400px; /* Dialog width */
+    max-width: 90%; /* Ensure it fits smaller screens */
+    text-align: center; /* Center-align text */
+    font-family: 'Audiowide', cursive; /* Retro font */
+    position: relative; /* Ensure proper positioning */
+}
+
+#aboutModal h2 {
+    font-size: 1.8em; /* Larger heading size */
+    margin-bottom: 15px; /* Space below heading */
+}
+
+#aboutModal p, #aboutModal ul {
+    margin: 10px 0; /* Space between paragraphs and lists */
+    font-size: 1em; /* Standard font size */
+}
+
+#aboutModal ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+
+#aboutModal ul li {
+    margin: 5px 0; /* Space between list items */
+}
+
+#closeDialog {
+    position: absolute; /* Position the close button */
+    top: 10px; /* Align to the top */
+    right: 10px; /* Align to the right */
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text color */
+    font-size: 1.2em; /* Slightly larger font size */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Pointer cursor */
+    transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+#closeDialog:hover {
+    transform: scale(1.2); /* Slight zoom on hover */
+    color: #0c0a04; /* Change color on hover */
 }
