@@ -1,7 +1,6 @@
 // User db
 const users = [
-    { username: 'p', password: 'testuser' },
-    { username: '1', password: '1' } //delete before applying 
+    { username: 'p', password: 'testuser' }
 ];
 
 // =========Main function ============
@@ -32,13 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const aboutButton = document.querySelector('button[onclick="showSection(\'about\')"]');
     if (aboutButton) {
-        // Remove the inline onclick attribute to prevent showSection from being called
         aboutButton.removeAttribute("onclick");
     
-        // Add a custom event listener to open the dialog
         aboutButton.addEventListener("click", (e) => {
-            e.preventDefault(); // Prevent default behavior
-            dialog.showModal(); // Open the about dialog
+            e.preventDefault(); 
+            dialog.showModal(); 
         });
     }
 
@@ -60,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         keys[event.key] = true;
         if (event.key === window.shootKey || (window.shootKey === ' ' && e.code === 'Space')){
-            // Handle shooting action
             playerShoot();
         }
 
@@ -98,19 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const typewriterText = "Welcome to the Galactic Combat Game!";
         const typewriterElement = document.getElementById('typewriter');
         let index = 0;
-        let typingStarted = false; // Flag to prevent multiple calls
+        let typingStarted = false; 
     
         function type() {
             if (index < typewriterText.length) {
                 typewriterElement.textContent += typewriterText.charAt(index);
                 index++;
-                setTimeout(type, 100); // Adjust typing speed (in milliseconds)
+                setTimeout(type, 100); 
             }
         }
     
         if (!typingStarted) {
-            typingStarted = true; // Set the flag to true
-            type(); // Start the typing effect
+            typingStarted = true; 
+            type(); 
         }
     });
     
@@ -279,18 +275,15 @@ function handle_login(event) {
         clearFormFields("loginForm")
         showSection('config');
 
-        // Set the current player and initialize their score history
         currentPlayer = username;
         if (!scoreHistory[currentPlayer]) {
             scoreHistory[currentPlayer] = [];
         }
-        // Clear the scoreboard for the new player
         const scoreboard = document.getElementById('scoreboard');
         if (scoreboard) {
             scoreboard.remove();
         }
 
-        // Clear the error message
         document.getElementById('loginMessage').textContent = "";
 
     } else {
@@ -338,7 +331,6 @@ function gameSetUp(duration){
     keys = {};
     document.querySelector('header').style.display = 'none';
     document.querySelector('nav').style.display = 'none';
-    //document.body.style.overflow = 'hidden';
 
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -413,7 +405,6 @@ function updateGame(){
     updateEnemyPositions()
     updateEnemyBulletPositions()
 
-    // Update the game info bar
     document.getElementById("game_score").textContent = player.points;
     document.getElementById("lives").textContent = player.lives; 
 }
@@ -434,7 +425,6 @@ function drawGame(){
         ctx.drawImage(bullet.image, bullet.x, bullet.y, bullet.width, bullet.height);
     });
 
-    // Draw player bullets
     playerBullets.forEach(bullet => {
         ctx.fillStyle = 'yellow';
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
@@ -453,7 +443,7 @@ function endGame(status) {
     clearInterval(timerInterval);
     timerInterval = null;
     gameRunning = false; 
-    cancelAnimationFrame(gameLoopId); // Cancel the animation frame
+    cancelAnimationFrame(gameLoopId); 
 
     // Stop music
     const backgroundMusic = document.getElementById('backgroundMusic');
@@ -593,9 +583,8 @@ function updateEnemyPositions() {
         }
     });
 
-    // If a boundary is reached reverse direction and move enemies down
     if (reachedBoundary) {
-        enemyDirection *= -1; // Reverse direction
+        enemyDirection *= -1; 
         enemyShips.forEach(enemy => {
         });
     }
@@ -605,15 +594,15 @@ function updateEnemyPositions() {
 function playerShoot() {
     if (!playerCanShoot) return;
     const bullet = {
-        x: player.x + player.width / 2 - 5, // Center the bullet horizontally
+        x: player.x + player.width / 2 - 5, 
         y: player.y, 
         width: 10,
         height: 20,
-        speed: 10 // Bullet speed
+        speed: 10 
     };
     playerBullets.push(bullet);
 
-    playerCanShoot = false; // Set cooldown
+    playerCanShoot = false; 
     setTimeout(() => {
         playerCanShoot = true; 
     }, 300);
@@ -646,7 +635,6 @@ function updateEnemyBulletPositions() {
         bullet.y += bullet.speed;
         
         if (isColliding(bullet, player)) {
-            // Play player hit sound
             const playerHitSound = new Audio('assets/player-hit.mp3'); 
             playerHitSound.volume = 0.7; 
             playerHitSound.play();
@@ -660,7 +648,6 @@ function updateEnemyBulletPositions() {
             player.y = playerStartPositionY;
             return false;
         }
-        // Remove if it's off-screen
         return bullet.y < canvas.height;
     });
 
@@ -671,20 +658,17 @@ function updateEnemyBulletPositions() {
 
 function updatePlayerBullets() {
     playerBullets.forEach((bullet, index) => {
-        bullet.y -= bullet.speed; // Move the bullet upward
+        bullet.y -= bullet.speed; 
 
         enemyShips.forEach((enemy, enemyIndex) => {
             if (isColliding(bullet, enemy)) {
-                // Play enemy hit sound
                 const enemyHitSound = new Audio('assets/enemy-hit.mp3'); 
                 enemyHitSound.volume = 0.7; 
                 enemyHitSound.play();
 
-                // Remove the bullet and the enemy
                 playerBullets.splice(index, 1);
                 enemyShips.splice(enemyIndex, 1);
 
-                // Update player points based on the enemy row
                 switch (enemy.row) {
                     case 0:
                         player.points += 20; 

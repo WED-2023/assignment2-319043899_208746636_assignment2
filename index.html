@@ -11,10 +11,7 @@
     <!-- Link to external JavaScript -->
     <script src="spaceship.js" defer></script>
 
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">   
-     <!-- <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> -->
 </head>
 <body>
 
@@ -24,8 +21,6 @@
     <div class="layer"></div>
     <div class="layer"></div>
 </div>
-
-
 
     <header>
        <h1></h1>
@@ -45,8 +40,8 @@
        <h3>Ido Bergerzon 319043899, link to website: <a href="https://wed-2023.github.io/319043899/" target="_blank">Louis Singer</a></h3>
        <h3>Aviv Nachmias 208746636, link to website: <a href="https://wed-2023.github.io/208746636/" target="_blank">Aaron griner</a></h3>
 
-       <!-- <h3></h3> -->
-       <!-- <button class="styled-button" onclick="showSection('login')">Login</button> -->
+       <button onclick="showSection('signup')">Sign Up</button>
+       <button onclick="showSection('login')">Login</button>
     </div>
  
     <div id="signup" class="content-section">
@@ -190,12 +185,22 @@
           <li>Aviv Nachmias – 208746636</li>
         </ul>
         <p><strong>Template used:</strong> Yes, using &lt;template&gt;</p>
-        <p><strong>jQuery Plugin used:</strong> No, native HTML5 &lt;dialog&gt;</p>
-        <p><strong>Challenges:</strong></p>
+        <p><strong>jQuery Plugin used:</strong> Yes, jQuery was used.</p>        <p><strong>Challenges:</strong></p>
         <ul>
           <li>Validations and transitions between screens</li>
           <li>Configuring and starting the game dynamically</li>
         </ul>
+        <p><strong>Laws of the Game:</strong></p>
+        <ul>
+            <li>You have a limited number of lives (3). If you lose all your lives, the game ends.</li>
+            <li>Use the configured shooting key to shoot enemies.</li>
+            <li>Use the arrow keys — <strong>'Up'</strong>, <strong>'Left'</strong>, and <strong>'Right'</strong> — to move the player.</li>
+            <li>Enemies will appear on the screen. Destroy them to earn points.</li>
+            <li>Avoid enemy bullets. Getting hit will reduce your lives.</li>
+            <li>The game duration is configurable (minimum: 2 minutes).</li>
+            <li>Your score is calculated based on the number of enemies destroyed and their position.</li>
+            <li>At the end of the game, your score and position on the scoreboard will be displayed.</li>
+          </ul>
 
       </form>
     </dialog>
