@@ -8,6 +8,8 @@ Welcome to **Galactic Combat**, an exciting space adventure game where you battl
 ### 🌐 Play the Game
 [Click here to play Galactic Combat! 🚀](https://wed-2023.github.io/assignment2-319043899_208746636_assignment2/)
 
+---
+
 
 ## Features🌌
 - **Dynamic Gameplay**: Enemies move and shoot bullets, increasing difficulty over time.
