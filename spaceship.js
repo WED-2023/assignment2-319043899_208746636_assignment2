@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========== Handle keys  ==========
     document.addEventListener('keydown', (event) => {
         keys[event.key] = true;
-        if (event.key === window.shootKey || (window.shootKey === ' ' && e.code === 'Space')){
+        if (event.key === window.shootKey || (window.shootKey === ' ' && event.code === 'Space')){
             playerShoot();
         }
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('exitButton').addEventListener('click', function() {
         resetGame()
-        document.querySelector('header').style.display = 'block';
+        document.querySelector('header').style.display = 'flex';
         document.querySelector('nav').style.display = 'flex';
         showSection('welcome');
     });
@@ -151,6 +151,7 @@ const endGameStatus = {
     timer_more_100: 'Winner!'
 
 };
+
  
 let scoreHistory = {}; 
 let currentPlayer = null;
@@ -355,6 +356,7 @@ function gameSetUp(duration){
     startGameTimer(duration);
     updateEnemyPositions()
     gameLoop()
+
 };
 
 
@@ -481,7 +483,7 @@ function resetGame(){
         clearInterval(timerInterval);
         timerInterval = null; 
     }
-    
+    keys = {};
     player.points = 0;
     player.lives = 3;
     playerBullets = [];
